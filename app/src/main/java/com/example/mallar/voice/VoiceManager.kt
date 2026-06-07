@@ -16,8 +16,8 @@ private const val TAG = "VoiceManager"
  * Extend freely — each entry maps to a [Locale] used with Android TTS.
  */
 enum class NavigationLanguage(val locale: Locale, val displayName: String) {
-    ARABIC(Locale("ar"), "العربية"),
-    ENGLISH(Locale.ENGLISH, "English")
+    ARABIC(Locale("ar", "EG"), "العربية"),
+    ENGLISH(Locale("en", "GB"), "English")  // Force British English
 }
 
 /**
@@ -147,19 +147,100 @@ class VoiceManager(private val context: Context) {
 
     // ── Private helpers ───────────────────────────────────────────────────────
 
+    // FIX — language-appropriate rates in applyLanguage()
     private fun applyLanguage(lang: NavigationLanguage) {
         val engine = tts ?: return
         val result = engine.setLanguage(lang.locale)
+
         if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-            // Try system default as fallback
             engine.setLanguage(Locale.getDefault())
-            Log.w(TAG, "Locale ${lang.locale} not supported — falling back to system default")
-        } else {
-            Log.d(TAG, "Language set to ${lang.locale}")
+            Log.w(TAG, "Locale ${lang.locale} not supported — falling back")
         }
-        // Speech rate & pitch for natural navigation cadence
-        engine.setSpeechRate(0.95f)
-        engine.setPitch(1.0f)
+
+        when (lang) {
+            NavigationLanguage.ENGLISH -> {
+                engine.setSpeechRate(0.88f)   // Measured, authoritative — like a calm navigator
+                engine.setPitch(0.92f)        // Slightly lower = warmer, more masculine, less robotic
+            }
+            NavigationLanguage.ARABIC -> {
+                engine.setSpeechRate(0.90f)   // Arabic TTS tends to rush — pull it back
+                engine.setPitch(1.0f)         // Arabic voices are already calibrated well at 1.0
+            }
+        }
+    }
+    // ADD this method to VoiceManager, call it inside init() after applyLanguage()
+    private fun selectBestVoice(lang: NavigationLanguage) {
+        val engine = tts ?: return
+        val available = engine.voices ?: return
+
+        val targetLocale = lang.locale
+        val langTag = targetLocale.toLanguageTag() // e.g. "en-GB"
+
+        // Priority order: neural > standard, prefer male for British English
+        val preferred = available
+            .filter { voice ->
+                !voice.isNetworkConnectionRequired || isNetworkAvailable()
+            }
+            .filter { voice ->
+                voice.locale.toLanguageTag().startsWith(langTag.take(5)) // "en-GB" or "ar-EG"
+            }
+            .sortedWith(compareBy(
+                { if (it.name.contains("neural", ignoreCase = true) ||
+                    it.name.contains("wavenet", ignoreCase = true) ||
+                    it.name.contains("network", ignoreCase = true)) 0 else 1 },
+                { if (lang == NavigationLanguage.ENGLISH &&
+                    it.name.contains("male", ignoreCase = true)) 0 else 1 },
+                { it.latency }
+            ))
+            .firstOrNull()
+
+        if (preferred != null) {
+            val result = engine.setVoice(preferred)
+            Log.d(TAG, "Voice selected: ${preferred.name} (result=$result)")
+        } else {
+            Log.w(TAG, "No preferred voice found for $langTag — using engine default")
+        }
+    }
+
+    private fun isNetworkAvailable(): Boolean {
+        // Inject ConnectivityManager or pass from context — simple check
+        return true // Default permissive; override in production
+    }
+
+    // ADD a helper method to VoiceManager
+    fun speakSsml(ssml: String, minCooldownMs: Long = 0L, force: Boolean = false) {
+        if (!isEnabled || !isReady) return
+        val now = System.currentTimeMillis()
+        if (!force && minCooldownMs > 0 && (now - lastSpeakTimeMs) < minCooldownMs) return
+
+        lastSpeakTimeMs = now
+        val utteranceId = UUID.randomUUID().toString()
+        val params = Bundle().apply {
+            putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, 1.0f)
+        }
+        // Note: Android TTS SSML support is partial but handles <break>, <emphasis>, <say-as>
+        tts?.speak(ssml, TextToSpeech.QUEUE_FLUSH, params, utteranceId)
+    }
+
+    // Helper to wrap plain text with navigation-appropriate SSML
+    fun speakNavigationInstruction(instruction: String, force: Boolean = false) {
+        // Convert plain text to SSML with natural pauses and emphasis
+        val ssml = buildNavigationSsml(instruction)
+        speakSsml(ssml, force = force)
+    }
+
+    private fun buildNavigationSsml(text: String): String {
+        // Android TTS supports a reduced SSML set
+        var result = text
+            .replace("Turn right", "<emphasis level=\"strong\">Turn right</emphasis>")
+            .replace("Turn left", "<emphasis level=\"strong\">Turn left</emphasis>")
+            .replace("now", "<emphasis level=\"moderate\">now</emphasis>")
+            .replace(Regex("(\\d+) metres")) { mr ->
+                "<say-as interpret-as=\"cardinal\">${mr.groupValues[1]}</say-as>" +
+                        "<break time=\"100ms\"/>metres"
+            }
+        // Wrap in speak tag — required for SSML
+        return "<speak>$result</speak>"
     }
 
     private fun configureProgressListener() {

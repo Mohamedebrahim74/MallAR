@@ -44,7 +44,7 @@ class LogoDetector(private val context: Context) {
 
     // ── TASK 1: Strict confidence threshold (raised from 0.35 → 0.75) ─────────
     // A higher threshold dramatically reduces false positives from random scenes.
-    private val CONFIDENCE_THRESHOLD = 0.75f
+    private val CONFIDENCE_THRESHOLD = 0.40f
 
     // ── TASK 2: Margin-based ambiguity rejection ───────────────────────────────
     // If the top-2 brands are within MARGIN_THRESHOLD of each other the scene is

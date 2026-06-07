@@ -109,8 +109,8 @@ class VoiceAssistantManager(private val context: Context) {
             )
         }
 
-        sttManager.onResult = { transcript, isArabic ->
-            scope.launch { processTranscript(transcript, isArabic) }
+        sttManager.onResult = { transcript, isArabic, alternatives ->
+            scope.launch { processTranscript(transcript, isArabic, alternatives) }
         }
 
         sttManager.onError = { code, message ->
@@ -124,20 +124,29 @@ class VoiceAssistantManager(private val context: Context) {
         }
     }
 
-    private suspend fun processTranscript(transcript: String, isArabic: Boolean) {
-        Log.d(TAG, "Processing: \"$transcript\" (ar=$isArabic)")
-        setStatus(VoiceAssistantStatus.THINKING, transcript = transcript)
-        preferArabic = isArabic
-        NavigationState.preferArabicVoice = isArabic
-
-        val lang = if (isArabic) NavigationLanguage.ARABIC else NavigationLanguage.ENGLISH
-        ttsManager.setLanguage(lang)
-
+    private suspend fun processTranscript(
+        transcript: String,
+        isArabic: Boolean,
+        alternatives: List<String> = emptyList()
+    ) {
         val graph = graphProvider?.invoke()
-        val intent = withContext(Dispatchers.Default) {
+        var intent = withContext(Dispatchers.Default) {
             LocalIntentParser.parse(transcript, graph)
         }
-        Log.d(TAG, "Intent: ${intent.intent}, dest=${intent.destination}")
+
+        // If top result was UNKNOWN, try alternatives before giving up
+        if (intent.intent == VoiceIntent.UNKNOWN && alternatives.size > 1) {
+            for (alt in alternatives.drop(1)) {
+                val altIntent = withContext(Dispatchers.Default) {
+                    LocalIntentParser.parse(alt, graph)
+                }
+                if (altIntent.intent != VoiceIntent.UNKNOWN) {
+                    intent = altIntent
+                    Log.d(TAG, "Alternative transcript used: \"$alt\"")
+                    break
+                }
+            }
+        }
 
         handleIntent(intent, graph)
     }

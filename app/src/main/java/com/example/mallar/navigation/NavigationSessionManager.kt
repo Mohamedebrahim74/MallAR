@@ -21,6 +21,9 @@ enum class NavMode { MAP, CAMERA }
 data class NavSessionState(
     val pathNodes: List<GraphNode>    = emptyList(),
     val segmentIdx: Int               = 0,
+    val currentFloor: Int             = 2,
+    val isPausedForFloorTransition: Boolean = false,
+    val pendingFloorTransition: FloorTransitionHelper.PathFloorTransition? = null,
     val destinationName: String       = "",
     val userMapX: Float               = 0f,
     val userMapY: Float               = 0f,
@@ -53,9 +56,13 @@ class NavigationSessionManager(
     private val driftMonitor     = DriftMonitor()
     private val smoother         = PositionSmoother()
 
+    private var pathTransitions: List<FloorTransitionHelper.PathFloorTransition> = emptyList()
+    private var completedTransitionCount = 0
+
     var onRerouteNeeded: (() -> Unit)? = null
     var onArrived: (() -> Unit)? = null
     var onRelocalizationNeeded: ((reason: String) -> Unit)? = null
+    var onFloorTransitionReached: ((FloorTransitionHelper.PathFloorTransition) -> Unit)? = null
 
     fun initialize(pathNodes: List<GraphNode>, destinationName: String) {
         if (pathNodes.size < 2) {
@@ -73,8 +80,12 @@ class NavigationSessionManager(
             onRelocalizationNeeded?.invoke(reason)
         }
 
+        pathTransitions = FloorTransitionHelper.scanPathTransitions(pathNodes)
+        completedTransitionCount = 0
+
         val distM = (totalPathDistancePx(pathNodes) / pxPerMetre).roundToInt().coerceAtLeast(1)
         val mins  = (distM / 80f).coerceAtLeast(1f).roundToInt()
+        val startFloor = startNode.floor
 
         _sessionState.update {
             it.copy(
@@ -83,9 +94,13 @@ class NavigationSessionManager(
                 userMapX           = startNode.x.toFloat(),
                 userMapY           = startNode.y.toFloat(),
                 remainingDistanceM = distM,
-                walkMinutes        = mins
+                walkMinutes        = mins,
+                currentFloor       = startFloor,
+                isPausedForFloorTransition = false,
+                pendingFloorTransition = null,
             )
         }
+        NavigationFloorState.currentFloor = startFloor
 
         Log.d(TAG, "Initialised: ${pathNodes.size} nodes, dest=$destinationName")
         recomputeAndEmit()
@@ -99,7 +114,37 @@ class NavigationSessionManager(
         pathSnapper.reset()
         smoother.reset()
         driftMonitor.onRelocalizationNeeded = null
+        pathTransitions = emptyList()
+        completedTransitionCount = 0
+        onFloorTransitionReached = null
         Log.d(TAG, "Destroyed")
+    }
+
+    fun confirmFloorTransition() {
+        val state = _sessionState.value
+        val pending = state.pendingFloorTransition ?: return
+        val path = state.pathNodes
+        val arrive = path.getOrNull(pending.arriveNodeIndex) ?: return
+
+        completedTransitionCount++
+        positionTracker?.relocalize(arrive)
+        pathSnapper.reset()
+        smoother.reset()
+
+        _sessionState.update {
+            it.copy(
+                isPausedForFloorTransition = false,
+                pendingFloorTransition     = null,
+                currentFloor               = pending.toFloor,
+                segmentIdx                 = pending.arriveNodeIndex,
+                userMapX                   = arrive.x.toFloat(),
+                userMapY                   = arrive.y.toFloat(),
+                isOnPath                   = true,
+            )
+        }
+        NavigationFloorState.currentFloor = pending.toFloor
+        Log.d(TAG, "Floor transition confirmed → floor ${pending.toFloor}, node ${arrive.id}")
+        recomputeAndEmit()
     }
 
     fun onHeadingUpdated(azimuthDeg: Float) {
@@ -109,6 +154,10 @@ class NavigationSessionManager(
     }
 
     fun onStep(totalSteps: Long) {
+        if (_sessionState.value.isPausedForFloorTransition) {
+            _sessionState.update { it.copy(totalSteps = totalSteps) }
+            return
+        }
         // StepTracker already debounces at 400 ms (hardware) or STEP_DEBOUNCE_MS
         // (software fallback). A second gate here only silently drops valid steps.
         val stridePx = StepTracker.STRIDE_LENGTH_M * pxPerMetre
@@ -144,9 +193,20 @@ class NavigationSessionManager(
             MallGraphRepository.findNearestNode(mallGraph, tracker.posX, tracker.posY)
         } else null
         if (nearNode != null) tracker?.relocalize(nearNode)
+        pathTransitions = FloorTransitionHelper.scanPathTransitions(newPath)
+        completedTransitionCount = 0
+        val floor = nearNode?.floor ?: newPath.first().floor
         _sessionState.update {
-            it.copy(pathNodes = newPath, segmentIdx = 0, isRerouting = false)
+            it.copy(
+                pathNodes = newPath,
+                segmentIdx = 0,
+                isRerouting = false,
+                currentFloor = floor,
+                isPausedForFloorTransition = false,
+                pendingFloorTransition = null,
+            )
         }
+        NavigationFloorState.currentFloor = floor
         Log.d(TAG, "Path updated: ${newPath.size} nodes")
         recomputeAndEmit()
     }
@@ -168,6 +228,8 @@ class NavigationSessionManager(
 
     private fun onPositionUpdated(rawPosX: Double, rawPosY: Double) {
         val state = _sessionState.value
+        if (state.isPausedForFloorTransition) return
+
         val path  = state.pathNodes
 
         val snapResult = pathSnapper.snap(rawPosX, rawPosY, path, state.segmentIdx)
@@ -183,6 +245,28 @@ class NavigationSessionManager(
             headingDeg  = state.headingDeg
         )
         val drift = driftMonitor.driftState
+
+        val transition = FloorTransitionHelper.pendingTransition(
+            path = path,
+            transitions = pathTransitions,
+            completedCount = completedTransitionCount,
+            segmentIdx = newSeg,
+            userX = snappedX,
+            userY = snappedY,
+        )
+        if (transition != null && !state.isPausedForFloorTransition) {
+            _sessionState.update {
+                it.copy(
+                    isPausedForFloorTransition = true,
+                    pendingFloorTransition     = transition,
+                    userMapX                   = snappedX.toFloat(),
+                    userMapY                   = snappedY.toFloat(),
+                    segmentIdx                 = newSeg,
+                )
+            }
+            onFloorTransitionReached?.invoke(transition)
+            return
+        }
 
         val (smoothX, smoothY) = smoother.smoothPosition(snappedX, snappedY)
         // Use live tracker heading so each step uses the same heading as dead reckoning,
@@ -213,6 +297,8 @@ class NavigationSessionManager(
         val remainM  = (remainPx / pxPerMetre).roundToInt().coerceAtLeast(0)
         val mins     = if (remainM > 0) (remainM / 80f).coerceAtLeast(1f).roundToInt() else 0
 
+        val activeFloor = path.getOrNull(newSeg)?.floor ?: state.currentFloor
+
         _sessionState.update {
             it.copy(
                 userMapX           = smoothX.toFloat(),
@@ -222,10 +308,12 @@ class NavigationSessionManager(
                 remainingDistanceM = remainM,
                 walkMinutes        = mins,
                 isOnPath           = isOnPath,
+                currentFloor       = activeFloor,
                 driftLevel         = drift.level,
                 relocReason        = if (drift.relocNeeded) drift.relocReason else it.relocReason
             )
         }
+        NavigationFloorState.currentFloor = activeFloor
 
         recomputeAndEmit()
     }

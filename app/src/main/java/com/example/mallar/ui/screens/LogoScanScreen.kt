@@ -1,6 +1,5 @@
 package com.example.mallar.ui.screens
 
-
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageFormat
@@ -33,11 +32,9 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Mic
-import androidx.compose.material.icons.filled.MicOff
 import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
+
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.ViewInAr
 import androidx.compose.material3.*
@@ -67,10 +64,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.mallar.chat.ChatBottomSheet
-import com.example.mallar.voice.VoiceAssistantManager
-import com.example.mallar.voice.VoiceAssistantOverlay
-import com.example.mallar.voice.VoiceAssistantStatus
-import com.example.mallar.voice.FloatingVoiceButton
 import com.example.mallar.data.AStarPath
 import com.example.mallar.data.LandmarkDetection
 import com.example.mallar.data.LocalizationResult
@@ -96,10 +89,22 @@ object NavigationState {
     var aStarPath: AStarPath?        = null
     var startWithAr: Boolean         = false
     var estimatedHeadingDeg: Float?  = null
+    fun reset() {
+        startPlace            = null
+        selectedPlace         = null
+        estimatedDistance     = 0
+        estimatedMinutes      = 0
+        aStarPath             = null
+        startWithAr           = false
+        estimatedHeadingDeg   = null
+        currentFloor          = 2 }
 
     /** Voice + live guidance pick Arabic vs English TTS (set from STT when user speaks). */
     var preferArabicVoice: Boolean =
         java.util.Locale.getDefault().language.startsWith("ar")
+
+    /** Active floor during navigation (2 = map2.png, 3 = map3.png). */
+    var currentFloor: Int = 2
 }
 
 enum class ScanState { IDLE, SCANNING, LOCALIZING, FOUND, NOT_FOUND }
@@ -117,7 +122,6 @@ enum class ScreenFlow {
 fun LogoScanScreen(
     preselectedDestination: Boolean = false,
     onBackFromLogo: (() -> Unit)? = null,
-    onSettingsClick: () -> Unit,
     onStoreSelected: (Boolean) -> Unit
 ) {
     val context        = LocalContext.current
@@ -170,82 +174,6 @@ fun LogoScanScreen(
         }
     }
 
-    // ── Voice Assistant ───────────────────────────────────────────────────────
-    var showVoiceAssistant by remember { mutableStateOf(false) }
-    val voiceAssistant = remember { VoiceAssistantManager(context) }
-    val voiceUiState by voiceAssistant.uiState.collectAsState()
-
-    DisposableEffect(Unit) {
-        voiceAssistant.initialize()
-        voiceAssistant.graphProvider = { mallGraph }
-        voiceAssistant.navStateProvider = {
-            runCatching { com.example.mallar.navigation.NavigationSessionManager.instance.sessionState.value }.getOrNull()
-        }
-        voiceAssistant.onNavigateTo = { shopName, isArabic ->
-            NavigationState.preferArabicVoice = isArabic
-            val graph = mallGraph
-            if (graph == null) {
-                null
-            } else {
-                val destPlace = allPlaces.firstOrNull { it.brand.equals(shopName, ignoreCase = true) }
-                    ?: allPlaces.firstOrNull { it.brand.contains(shopName, ignoreCase = true) }
-                if (destPlace != null) {
-                    destination = destPlace
-                    NavigationState.selectedPlace = destPlace
-                    val path = MallGraphRepository.aStar(graph, startPlace?.id ?: -1, destPlace.id)
-                    if (path != null) {
-                        NavigationState.aStarPath = path
-                        NavigationState.startPlace = startPlace
-                        NavigationState.startWithAr = false
-                        NavigationState.estimatedDistance = (path.totalDistancePx / 4.48f).toInt()
-                        NavigationState.estimatedMinutes = (NavigationState.estimatedDistance / 80f).coerceIn(1f, 20f).toInt()
-                        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-                            showVoiceAssistant = false
-                            onStoreSelected(false)
-                        }, 2000L)
-                        path
-                    } else null
-                } else null
-            }
-        }
-        voiceAssistant.onNavigateWithOrigin = { originShop, destShop, isArabic ->
-            NavigationState.preferArabicVoice = isArabic
-            val graph = mallGraph
-            if (graph == null) {
-                null
-            } else {
-                val startP = allPlaces.firstOrNull { it.brand.equals(originShop, ignoreCase = true) }
-                    ?: allPlaces.firstOrNull { it.brand.contains(originShop, ignoreCase = true) }
-                val destP = allPlaces.firstOrNull { it.brand.equals(destShop, ignoreCase = true) }
-                    ?: allPlaces.firstOrNull { it.brand.contains(destShop, ignoreCase = true) }
-                if (startP == null || destP == null) {
-                    null
-                } else {
-                    startPlace = startP
-                    destination = destP
-                    NavigationState.startPlace = startP
-                    NavigationState.selectedPlace = destP
-                    val path = MallGraphRepository.aStar(graph, startP.id, destP.id)
-                    if (path == null) {
-                        null
-                    } else {
-                        NavigationState.aStarPath = path
-                        NavigationState.startWithAr = false
-                        NavigationState.estimatedDistance = (path.totalDistancePx / 4.48f).toInt()
-                        NavigationState.estimatedMinutes = (NavigationState.estimatedDistance / 80f).coerceIn(1f, 20f).toInt()
-                        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-                            showVoiceAssistant = false
-                            onStoreSelected(false)
-                        }, 1800L)
-                        path
-                    }
-                }
-            }
-        }
-        voiceAssistant.onStopNavigation = { showVoiceAssistant = false }
-        onDispose { voiceAssistant.destroy() }
-    }
-
     BackHandler {
         when (flow) {
             ScreenFlow.DESTINATION_DETAIL -> {
@@ -294,7 +222,7 @@ fun LogoScanScreen(
 
     val filteredPlaces = remember(searchQuery, allPlaces, startPlace) {
         val base = if (searchQuery.isBlank()) allPlaces
-                   else allPlaces.filter { it.brand.contains(searchQuery, ignoreCase = true) }
+        else allPlaces.filter { it.brand.contains(searchQuery, ignoreCase = true) }
         base.filter { it.id != startPlace?.id }
     }
 
@@ -499,7 +427,7 @@ fun LogoScanScreen(
                     val chosenPlace = chosenDetection.place
                         ?: allPlaces.firstOrNull { p ->
                             p.brand.equals(chosenDetection.brand, ignoreCase = true) ||
-                            p.brand.contains(chosenDetection.brand, ignoreCase = true)
+                                    p.brand.contains(chosenDetection.brand, ignoreCase = true)
                         }
                     startPlace = chosenPlace
                     NavigationState.startPlace = chosenPlace
@@ -626,8 +554,8 @@ fun LogoScanScreen(
                             verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Filled.Search, null, tint = TextSecondary.copy(0.6f), modifier = Modifier.size(18.dp))
                             Spacer(Modifier.width(8.dp))
-                                BasicTextField(value = searchQuery, onValueChange = { searchQuery = it },
-                                    textStyle = LocalTextStyle.current.copy(fontSize = 15.sp, color = if (isDarkMode) com.example.mallar.ui.theme.DarkTextPrimary else TextPrimary),
+                            BasicTextField(value = searchQuery, onValueChange = { searchQuery = it },
+                                textStyle = LocalTextStyle.current.copy(fontSize = 15.sp, color = if (isDarkMode) com.example.mallar.ui.theme.DarkTextPrimary else TextPrimary),
                                 modifier = Modifier.weight(1f), singleLine = true,
                                 decorationBox = { inner ->
                                     if (searchQuery.isEmpty()) Text("Search destination…",
@@ -674,14 +602,14 @@ fun LogoScanScreen(
                         .padding(horizontal = 14.dp, vertical = 12.dp),
                         verticalAlignment = Alignment.CenterVertically) {
                         Surface(onClick = {
-                                if (preselectedDestination) {
-                                    flow = ScreenFlow.CAMERA_IDLE
-                                    destination = NavigationState.selectedPlace
-                                } else {
-                                    flow = ScreenFlow.PICK_DESTINATION
-                                    destination = null
-                                }
-                            },
+                            if (preselectedDestination) {
+                                flow = ScreenFlow.CAMERA_IDLE
+                                destination = NavigationState.selectedPlace
+                            } else {
+                                flow = ScreenFlow.PICK_DESTINATION
+                                destination = null
+                            }
+                        },
                             modifier = Modifier.size(42.dp), shape = CircleShape, color = if (isDarkMode) com.example.mallar.ui.theme.DarkCard else White.copy(0.9f)) {
                             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                                 Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = if (isDarkMode) White else TextPrimary)
@@ -785,41 +713,8 @@ fun LogoScanScreen(
         // ══════════════════════════════════════════════════════════════════════
         val showIdle = flow == ScreenFlow.CAMERA_IDLE && scanState == ScanState.IDLE
 
-        // Top bar: Settings + Voice Assistant
-        AnimatedVisibility(visible = showIdle,
-            modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth(),
-            enter = fadeIn(), exit = fadeOut()) {
-            Row(Modifier.fillMaxWidth().statusBarsPadding()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
-                // Settings button
-                Box(
-                    Modifier.size(48.dp).clip(CircleShape)
-                        .background(if (isDarkMode) com.example.mallar.ui.theme.DarkCard else White)
-                        .shadow(if (isDarkMode) 0.dp else 4.dp, CircleShape)
-                        .clickable { onSettingsClick() },
-                    Alignment.Center
-                ) {
-                    Icon(Icons.Default.Settings, "Settings", tint = Teal, modifier = Modifier.size(22.dp))
-                }
-                // Voice Assistant pill
-                Surface(
-                    shape = RoundedCornerShape(24.dp),
-                    color = if (isDarkMode) com.example.mallar.ui.theme.DarkCard else White,
-                    shadowElevation = if (isDarkMode) 0.dp else 4.dp
-                ) {
-                    Row(
-                        Modifier.clickable { }.padding(horizontal = 14.dp, vertical = 10.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(Icons.Default.Mic, null, tint = Teal, modifier = Modifier.size(18.dp))
-                        Spacer(Modifier.width(6.dp))
-                        Text("Voice Assistant", color = if (isDarkMode) White else TextPrimary, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
-                    }
-                }
-            }
-        }
+        // Top bar: Settings button
+
 
         // Centre crosshair + hint text
         AnimatedVisibility(visible = showIdle, modifier = Modifier.align(Alignment.Center),
@@ -864,7 +759,7 @@ fun LogoScanScreen(
             }
         }
 
-        // Bottom: search bar + 3 action buttons
+        // Bottom: search bar + action buttons
         AnimatedVisibility(visible = showIdle, modifier = Modifier.align(Alignment.BottomCenter),
             enter = slideInVertically(tween(280)) { it } + fadeIn(),
             exit  = slideOutVertically(tween(200)) { it } + fadeOut()) {
@@ -906,42 +801,26 @@ fun LogoScanScreen(
                             Text("Where to go...", color = TextSecondary.copy(0.5f), fontSize = 15.sp, modifier = Modifier.weight(1f))
                             Box(Modifier.size(34.dp).clip(CircleShape).background(Teal),
                                 Alignment.Center) {
-                                Icon(Icons.Default.Settings, null, tint = White, modifier = Modifier.size(17.dp))
+
                             }
                         }
                     }
                 }
 
-                // 3 buttons panel
+                // Centered Scan Logo button panel (Ask Me moved to HomeScreen)
                 Surface(
                     Modifier.fillMaxWidth().shadow(if (isDarkMode) 0.dp else 6.dp, RoundedCornerShape(24.dp)),
                     RoundedCornerShape(24.dp),
                     color = if (isDarkMode) com.example.mallar.ui.theme.DarkCard else White
                 ) {
-                    Row(Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 12.dp),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically) {
-
-                        // Ask Me (chat)
-                        Column(
-                            Modifier.weight(1f).clip(RoundedCornerShape(16.dp))
-                                .background(if (isDarkMode) com.example.mallar.ui.theme.DarkSurface else Color(0xFFF1F5F9))
-                                .clickable { showChatBot = true }
-                                .padding(vertical = 14.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Icon(Icons.Default.SmartToy, null, tint = Teal, modifier = Modifier.size(28.dp))
-                            Spacer(Modifier.height(6.dp))
-                            Text("Ask Me", color = if (isDarkMode) White else TextPrimary, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
-                            Text("Get help", color = if (isDarkMode) White.copy(0.7f) else TextSecondary, fontSize = 11.sp)
-                        }
-
-                        Spacer(Modifier.width(8.dp))
-
-                        // Scan Logo — big centre button
-                        Column(Modifier.weight(1.3f),
-                            horizontalAlignment = Alignment.CenterHorizontally) {
-                            Box(Modifier.size(76.dp).clip(CircleShape)
+                    Column(
+                        Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        // Scan Logo — centered button
+                        Box(
+                            Modifier.size(80.dp).clip(CircleShape)
                                 .background(Brush.radialGradient(listOf(Teal, DarkTeal)))
                                 .clickable {
                                     if (scanState != ScanState.SCANNING && scannerReady) {
@@ -950,75 +829,34 @@ fun LogoScanScreen(
                                         scanRequested.set(true)
                                     }
                                 },
-                                contentAlignment = Alignment.Center) {
-                                Canvas(Modifier.size(38.dp)) {
-                                    val arm = size.minDimension * 0.32f
-                                    val gap = size.minDimension * 0.12f
-                                    val s   = size.minDimension * 0.48f
-                                    val c   = center
-                                    listOf(-1f to -1f, 1f to -1f, -1f to 1f, 1f to 1f).forEach { (sx, sy) ->
-                                        drawLine(Color.White, Offset(c.x + sx * gap, c.y + sy * s),
-                                            Offset(c.x + sx * (gap + arm), c.y + sy * s), strokeWidth = 4f, cap = StrokeCap.Round)
-                                        drawLine(Color.White, Offset(c.x + sx * s, c.y + sy * gap),
-                                            Offset(c.x + sx * s, c.y + sy * (gap + arm)), strokeWidth = 4f, cap = StrokeCap.Round)
-                                    }
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Canvas(Modifier.size(40.dp)) {
+                                val arm = size.minDimension * 0.32f
+                                val gap = size.minDimension * 0.12f
+                                val s   = size.minDimension * 0.48f
+                                val c   = center
+                                listOf(-1f to -1f, 1f to -1f, -1f to 1f, 1f to 1f).forEach { (sx, sy) ->
+                                    drawLine(Color.White, Offset(c.x + sx * gap, c.y + sy * s),
+                                        Offset(c.x + sx * (gap + arm), c.y + sy * s), strokeWidth = 4f, cap = StrokeCap.Round)
+                                    drawLine(Color.White, Offset(c.x + sx * s, c.y + sy * gap),
+                                        Offset(c.x + sx * s, c.y + sy * (gap + arm)), strokeWidth = 4f, cap = StrokeCap.Round)
                                 }
                             }
-                            Spacer(Modifier.height(6.dp))
-                            Text(
-                                when {
-                                    isMallDataLoading    -> "Loading map…"
-                                    logoDetector == null -> "Loading scanner…"
-                                    else                 -> "Scan Logo"
-                                },
-                                color = if (isDarkMode) White else TextPrimary, fontSize = 13.sp, fontWeight = FontWeight.Bold
-                            )
                         }
-
-                        Spacer(Modifier.width(8.dp))
-
-                        // Voice Assistant
-                        val voiceActive = voiceUiState.status != VoiceAssistantStatus.IDLE
-                        Column(
-                            Modifier.weight(1f).clip(RoundedCornerShape(16.dp))
-                                .background(if (voiceActive) Teal.copy(0.12f) else if (isDarkMode) com.example.mallar.ui.theme.DarkSurface else Color(0xFFF1F5F9))
-                                .clickable { showVoiceAssistant = true }
-                                .padding(vertical = 14.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Icon(
-                                imageVector = if (voiceUiState.status == com.example.mallar.voice.VoiceAssistantStatus.LISTENING)
-                                    Icons.Default.MicOff else Icons.Default.Mic,
-                                contentDescription = null,
-                                tint = Teal,
-                                modifier = Modifier.size(28.dp)
-                            )
-                            Spacer(Modifier.height(6.dp))
-                            Text("Voice", color = if (isDarkMode) White else TextPrimary, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
-                            Text("Assistant", color = if (isDarkMode) White else TextPrimary, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
-                            Text("Speak & Navigate", color = if (isDarkMode) White.copy(0.7f) else TextSecondary, fontSize = 10.sp)
-                        }
+                        Text(
+                            when {
+                                isMallDataLoading    -> "Loading map…"
+                                logoDetector == null -> "Loading scanner…"
+                                else                 -> "Scan Logo"
+                            },
+                            color = if (isDarkMode) White else TextPrimary,
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
             }
-        }
-
-        // ── Voice Assistant Overlay ───────────────────────────────────────────
-        if (showVoiceAssistant) {
-            VoiceAssistantOverlay(
-                uiState   = voiceUiState,
-                onMicTap  = {
-                    if (voiceUiState.status == com.example.mallar.voice.VoiceAssistantStatus.LISTENING) {
-                        voiceAssistant.cancelListening()
-                    } else {
-                        voiceAssistant.startListening()
-                    }
-                },
-                onDismiss = {
-                    voiceAssistant.cancelListening()
-                    showVoiceAssistant = false
-                }
-            )
         }
 
         if (showChatBot) {

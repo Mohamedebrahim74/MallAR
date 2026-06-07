@@ -52,7 +52,7 @@ fun WelcomeScreen(
             (context as? android.app.Activity)?.finish()
         } else {
             backPressedTime = currentTime
-            Toast.makeText(context, "Press back again to exit", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.press_back_exit), Toast.LENGTH_SHORT).show()
         }
     }
 

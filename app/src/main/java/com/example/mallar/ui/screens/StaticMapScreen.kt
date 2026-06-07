@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.example.mallar.data.MallGraphRepository
 import com.example.mallar.ui.theme.Teal
 import com.example.mallar.utils.CoordinateTransformer
+import com.example.mallar.utils.FloorMapAssets
 import com.example.mallar.ui.theme.White
 import com.example.mallar.ui.theme.RedAccent
 
@@ -40,56 +41,92 @@ private val EndRed = Color(0xFFE53935)
 @Composable
 fun StaticMapScreen(onBackClick: () -> Unit) {
     val context = LocalContext.current
-    val mapBitmap = remember {
-        context.assets.open("map2.png").use {
-            BitmapFactory.decodeStream(it).asImageBitmap()
-        }
-    }
 
     val pathData = NavigationState.aStarPath
-    val mallGraph = remember { MallGraphRepository.load(context) }
+    val hasActiveRoute = pathData != null && pathData.nodeIds.size >= 2
+
+    val mallGraph = remember {
+        MallGraphRepository.loadedGraph ?: MallGraphRepository.load(context)
+    }
     val nodeMap = remember(mallGraph) { mallGraph.nodes.associateBy { it.id } }
+
+    val displayFloor = remember(pathData, NavigationState.selectedPlace, NavigationState.currentFloor) {
+        if (pathData != null && pathData.nodeIds.size >= 2) {
+            NavigationState.currentFloor
+        } else {
+            FloorMapAssets.floorForStaticMap(pathData, nodeMap, NavigationState.selectedPlace)
+        }
+    }
+    val floorPathIds = remember(pathData, displayFloor) {
+        FloorMapAssets.pathNodeIdsOnFloor(pathData, nodeMap, displayFloor)
+    }
+    val mapBitmap = remember(displayFloor) {
+        runCatching {
+            context.assets.open(FloorMapAssets.mapAssetForFloor(displayFloor)).use {
+                BitmapFactory.decodeStream(it).asImageBitmap()
+            }
+        }.getOrNull()
+    }
 
     var scale by remember { mutableStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
-    var hasAutoZoomed by remember { mutableStateOf(false) }
+    var reCenterTrigger by remember { mutableStateOf(0) }
     var isDebugMode by remember { mutableStateOf(false) }
-
-    // Auto-zoom to fit the path on first load
+ 
+    // Auto-zoom to fit the path or entire map on first load/re-center
     val density = LocalDensity.current
     BoxWithConstraints(modifier = Modifier.fillMaxSize().background(Color(0xFF121212))) {
         val canvasWidth = with(density) { maxWidth.toPx() }
         val canvasHeight = with(density) { maxHeight.toPx() }
-
-        // Auto-zoom: compute bounding box of the path and zoom to fit
-        LaunchedEffect(pathData, canvasWidth, canvasHeight) {
-            if (hasAutoZoomed || pathData == null || pathData.nodeIds.size < 2) return@LaunchedEffect
-            val pathCoords = pathData.nodeIds.mapNotNull { nodeMap[it] }
-            if (pathCoords.isEmpty()) return@LaunchedEffect
-
-            val minX = pathCoords.minOf { CoordinateTransformer.transformX(it.x) }
-            val maxX = pathCoords.maxOf { CoordinateTransformer.transformX(it.x) }
-            val minY = pathCoords.minOf { CoordinateTransformer.transformY(it.y) }
-            val maxY = pathCoords.maxOf { CoordinateTransformer.transformY(it.y) }
-
-            val pathW = (maxX - minX).coerceAtLeast(50f)
-            val pathH = (maxY - minY).coerceAtLeast(50f)
-
-            // Add padding (20% on each side)
-            val padFactor = 1.4f
-            val fitScaleX = canvasWidth / (pathW * padFactor)
-            val fitScaleY = canvasHeight / (pathH * padFactor)
-            val fitScale = minOf(fitScaleX, fitScaleY).coerceIn(0.5f, 5f)
-
-            // Center the path
-            val centerX = (minX + maxX) / 2f
-            val centerY = (minY + maxY) / 2f
-            val offX = canvasWidth / 2f - centerX * fitScale
-            val offY = canvasHeight / 2f - centerY * fitScale
-
-            scale = fitScale
-            offset = Offset(offX, offY)
-            hasAutoZoomed = true
+ 
+        LaunchedEffect(floorPathIds, canvasWidth, canvasHeight, mapBitmap, reCenterTrigger) {
+            if (canvasWidth <= 0f || canvasHeight <= 0f) return@LaunchedEffect
+            
+            if (floorPathIds.size >= 2) {
+                // Scenario A: Active route. Fit the bounding box of the path.
+                val pathCoords = floorPathIds.mapNotNull { nodeMap[it] }
+                if (pathCoords.isEmpty()) return@LaunchedEffect
+ 
+                val minX = pathCoords.minOf { CoordinateTransformer.transformX(it.x) }
+                val maxX = pathCoords.maxOf { CoordinateTransformer.transformX(it.x) }
+                val minY = pathCoords.minOf { CoordinateTransformer.transformY(it.y) }
+                val maxY = pathCoords.maxOf { CoordinateTransformer.transformY(it.y) }
+ 
+                val pathW = (maxX - minX).coerceAtLeast(50f)
+                val pathH = (maxY - minY).coerceAtLeast(50f)
+ 
+                // Add padding (20% on each side)
+                val padFactor = 1.4f
+                val fitScaleX = canvasWidth / (pathW * padFactor)
+                val fitScaleY = canvasHeight / (pathH * padFactor)
+                val fitScale = minOf(fitScaleX, fitScaleY).coerceIn(0.5f, 5f)
+ 
+                // Center the path
+                val centerX = (minX + maxX) / 2f
+                val centerY = (minY + maxY) / 2f
+                val offX = canvasWidth / 2f - centerX * fitScale
+                val offY = canvasHeight / 2f - centerY * fitScale
+ 
+                scale = fitScale
+                offset = Offset(offX, offY)
+            } else if (mapBitmap != null) {
+                // Scenario B: No active route. Fit and center the entire map bitmap.
+                val mapW = mapBitmap.width.toFloat()
+                val mapH = mapBitmap.height.toFloat()
+ 
+                // Fit to screen with 5% padding on edges (0.9 fit factor)
+                val padFactor = 0.9f
+                val fitScaleX = (canvasWidth * padFactor) / mapW
+                val fitScaleY = (canvasHeight * padFactor) / mapH
+                val fitScale = minOf(fitScaleX, fitScaleY).coerceIn(0.2f, 5f)
+ 
+                // Center the map
+                val offX = (canvasWidth - mapW * fitScale) / 2f
+                val offY = (canvasHeight - mapH * fitScale) / 2f
+ 
+                scale = fitScale
+                offset = Offset(offX, offY)
+            }
         }
 
         Canvas(
@@ -106,8 +143,7 @@ fun StaticMapScreen(onBackClick: () -> Unit) {
                 translate(offset.x, offset.y)
                 scale(scale, scale, pivot = Offset.Zero)
             }) {
-                // Draw map
-                drawImage(image = mapBitmap)
+                mapBitmap?.let { drawImage(image = it) }
                 
                 // --- DEBUG MODE ---
                 if (isDebugMode) {
@@ -138,21 +174,19 @@ fun StaticMapScreen(onBackClick: () -> Unit) {
                     }
                 }
 
-                // Draw A* path
-                pathData?.let { aStarPath ->
-                    if (aStarPath.nodeIds.size >= 2) {
-                        // Draw path outline (wider, darker) for contrast
+                // Draw A* path (segment on the active floor map only)
+                if (floorPathIds.size >= 2) {
                         val outlinePath = Path()
                         val mainPath = Path()
-                        val firstNode = nodeMap[aStarPath.nodeIds.first()]
+                        val firstNode = nodeMap[floorPathIds.first()]
                         if (firstNode != null) {
                             val startX = CoordinateTransformer.transformX(firstNode.x)
                             val startY = CoordinateTransformer.transformY(firstNode.y)
                             
                             outlinePath.moveTo(startX, startY)
                             mainPath.moveTo(startX, startY)
-                            for (i in 1 until aStarPath.nodeIds.size) {
-                                val node = nodeMap[aStarPath.nodeIds[i]]
+                            for (i in 1 until floorPathIds.size) {
+                                val node = nodeMap[floorPathIds[i]]
                                 if (node != null) {
                                     val nx = CoordinateTransformer.transformX(node.x)
                                     val ny = CoordinateTransformer.transformY(node.y)
@@ -200,7 +234,7 @@ fun StaticMapScreen(onBackClick: () -> Unit) {
                             )
 
                             // ── End marker (red) with white outline ────────────────
-                            val lastNode = nodeMap[aStarPath.nodeIds.last()]
+                            val lastNode = nodeMap[floorPathIds.last()]
                             var endX = 0f
                             var endY = 0f
                             if (lastNode != null) {
@@ -245,9 +279,9 @@ fun StaticMapScreen(onBackClick: () -> Unit) {
                             }
 
                             // ── Direction arrows along path ────────────────────────
-                            for (i in 0 until aStarPath.nodeIds.size - 1) {
-                                val nA = nodeMap[aStarPath.nodeIds[i]] ?: continue
-                                val nB = nodeMap[aStarPath.nodeIds[i + 1]] ?: continue
+                            for (i in 0 until floorPathIds.size - 1) {
+                                val nA = nodeMap[floorPathIds[i]] ?: continue
+                                val nB = nodeMap[floorPathIds[i + 1]] ?: continue
                                 
                                 val ax = CoordinateTransformer.transformX(nA.x)
                                 val ay = CoordinateTransformer.transformY(nA.y)
@@ -275,9 +309,16 @@ fun StaticMapScreen(onBackClick: () -> Unit) {
                                 drawPath(arrowPath, color = Color.White)
                             }
                         }
-                    }
                 }
             }
+        }
+
+        if (mapBitmap == null) {
+            Text(
+                "Map unavailable",
+                color = White.copy(0.6f),
+                modifier = Modifier.align(Alignment.Center)
+            )
         }
 
         // Top UI Overlay
@@ -305,7 +346,7 @@ fun StaticMapScreen(onBackClick: () -> Unit) {
                     color = Color.Black.copy(alpha = 0.6f)
                 ) {
                     Text(
-                        "Route Map",
+                        "Route Map · Floor $displayFloor",
                         color = White,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
@@ -325,9 +366,8 @@ fun StaticMapScreen(onBackClick: () -> Unit) {
                     }
                 }
                 Spacer(modifier = Modifier.width(8.dp))
-                // Re-center button
                 Surface(
-                    onClick = { hasAutoZoomed = false },
+                    onClick = { reCenterTrigger++ },
                     modifier = Modifier.size(48.dp),
                     shape = CircleShape,
                     color = Color.Black.copy(alpha = 0.6f)
@@ -339,70 +379,72 @@ fun StaticMapScreen(onBackClick: () -> Unit) {
             }
         }
 
-        // Bottom Info Card
-        Surface(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(16.dp)
-                .fillMaxWidth()
-                .navigationBarsPadding(),
-            shape = RoundedCornerShape(24.dp),
-            color = Color.Black.copy(alpha = 0.85f),
-            border = androidx.compose.foundation.BorderStroke(1.dp, White.copy(alpha = 0.1f))
-        ) {
-            Column(modifier = Modifier.padding(20.dp)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    // Green dot for start
-                    Box(
-                        modifier = Modifier
-                            .size(10.dp)
-                            .background(StartGreen, CircleShape)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        "From: ${NavigationState.startPlace?.brand ?: "Current Location"}",
-                        color = White, fontSize = 14.sp, fontWeight = FontWeight.Medium
-                    )
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    // Red dot for end
-                    Box(
-                        modifier = Modifier
-                            .size(10.dp)
-                            .background(EndRed, CircleShape)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        "To: ${NavigationState.selectedPlace?.brand ?: "Destination"}",
-                        color = White, fontSize = 14.sp, fontWeight = FontWeight.Medium
-                    )
-                }
-                Spacer(modifier = Modifier.height(12.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        "Distance: ${NavigationState.estimatedDistance}m",
-                        color = White.copy(alpha = 0.7f), fontSize = 13.sp
-                    )
-                    Text(
-                        "Est. Time: ${NavigationState.estimatedMinutes} min",
-                        color = White.copy(alpha = 0.7f), fontSize = 13.sp
-                    )
+        if (hasActiveRoute) {
+            Surface(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .navigationBarsPadding(),
+                shape = RoundedCornerShape(24.dp),
+                color = Color.Black.copy(alpha = 0.85f),
+                border = androidx.compose.foundation.BorderStroke(1.dp, White.copy(alpha = 0.1f))
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    NavigationState.startPlace?.brand?.let { startBrand ->
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier
+                                    .size(10.dp)
+                                    .background(StartGreen, CircleShape)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                "From: $startBrand",
+                                color = White, fontSize = 14.sp, fontWeight = FontWeight.Medium
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                    NavigationState.selectedPlace?.brand?.let { destBrand ->
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier
+                                    .size(10.dp)
+                                    .background(EndRed, CircleShape)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                "To: $destBrand",
+                                color = White, fontSize = 14.sp, fontWeight = FontWeight.Medium
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(12.dp))
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            "Distance: ${NavigationState.estimatedDistance}m",
+                            color = White.copy(alpha = 0.7f), fontSize = 13.sp
+                        )
+                        Text(
+                            "Est. Time: ${NavigationState.estimatedMinutes} min",
+                            color = White.copy(alpha = 0.7f), fontSize = 13.sp
+                        )
+                    }
                 }
             }
         }
-        
-        // Help text
+
         Text(
             "Pinch to zoom • Drag to pan",
             color = White.copy(alpha = 0.5f),
             fontSize = 12.sp,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 150.dp)
+                .padding(bottom = if (hasActiveRoute) 150.dp else 32.dp)
         )
     }
 }

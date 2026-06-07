@@ -7,6 +7,7 @@ import com.example.mallar.data.GraphNode
 import com.example.mallar.data.MallGraphRepository
 import com.example.mallar.navigation.NavMode
 import com.example.mallar.navigation.NavSessionState
+import com.example.mallar.navigation.NavigationFloorState
 import com.example.mallar.navigation.NavigationSessionManager
 import com.example.mallar.voice.LocalIntentParser
 import kotlinx.coroutines.delay
@@ -42,6 +43,13 @@ class UnifiedNavigationViewModel : ViewModel() {
         setupRerouteCallback()
         startSession()
         enablePoseAfterGrace()
+        viewModelScope.launch {
+            navState.collect { state ->
+                if (!state.isPausedForFloorTransition) {
+                    NavigationState.currentFloor = state.currentFloor
+                }
+            }
+        }
     }
 
     private fun startSession() {
@@ -53,6 +61,7 @@ class UnifiedNavigationViewModel : ViewModel() {
 
         if (nodes.size >= 2) {
             sessionManager.initialize(nodes, destName)
+            NavigationState.currentFloor = NavigationFloorState.currentFloor
 
             // Apply the user's AR/Map choice after initialising
             if (NavigationState.startWithAr) {
@@ -75,6 +84,11 @@ class UnifiedNavigationViewModel : ViewModel() {
         sessionManager.onArrived = {
             /* arrival state is set inside sessionManager — UI reads it */
         }
+    }
+
+    fun confirmFloorTransition() {
+        sessionManager.confirmFloorTransition()
+        NavigationState.currentFloor = NavigationFloorState.currentFloor
     }
 
     private suspend fun performReroute() {

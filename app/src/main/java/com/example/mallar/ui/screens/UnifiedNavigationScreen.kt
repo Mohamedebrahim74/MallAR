@@ -38,6 +38,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mallar.data.MallGraphRepository
 import com.example.mallar.navigation.*
+import com.example.mallar.utils.FloorMapAssets
 import com.example.mallar.overlay.*
 import com.example.mallar.voice.NavigationSessionVoiceCoordinator
 import com.example.mallar.voice.NavigationVoiceFab
@@ -266,6 +267,85 @@ fun UnifiedNavigationScreen(
                 }
             )
         }
+
+        state.pendingFloorTransition?.let { transition ->
+            if (state.isPausedForFloorTransition) {
+                FloorTransitionSheet(
+                    transition = transition,
+                    onContinue = { viewModel.confirmFloorTransition() }
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun FloorTransitionSheet(
+    transition: com.example.mallar.navigation.FloorTransitionHelper.PathFloorTransition,
+    onContinue: () -> Unit,
+) {
+    val typeLabel = when (transition.transitionType.lowercase()) {
+        "elevator" -> androidx.compose.ui.res.stringResource(com.example.mallar.R.string.transition_elevator)
+        else -> androidx.compose.ui.res.stringResource(com.example.mallar.R.string.transition_escalator)
+    }
+    val message = androidx.compose.ui.res.stringResource(
+        com.example.mallar.R.string.floor_transition_message,
+        typeLabel,
+        transition.toFloor
+    )
+
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+        confirmValueChange = { false },
+    )
+    ModalBottomSheet(
+        onDismissRequest = { },
+        sheetState = sheetState,
+        containerColor = NavCard,
+        dragHandle = { BottomSheetDefaults.DragHandle() }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp, vertical = 8.dp)
+                .navigationBarsPadding(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                Icons.Default.Elevator,
+                contentDescription = null,
+                tint = NavBlue,
+                modifier = Modifier.size(40.dp)
+            )
+            Spacer(Modifier.height(12.dp))
+            Text(
+                text = androidx.compose.ui.res.stringResource(com.example.mallar.R.string.floor_transition_title),
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
+            Spacer(Modifier.height(12.dp))
+            Text(
+                text = message,
+                color = Color.White.copy(0.85f),
+                fontSize = 15.sp,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                lineHeight = 22.sp
+            )
+            Spacer(Modifier.height(24.dp))
+            Button(
+                onClick = onContinue,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = NavBlue)
+            ) {
+                Text(
+                    androidx.compose.ui.res.stringResource(com.example.mallar.R.string.floor_transition_continue),
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+            Spacer(Modifier.height(16.dp))
+        }
     }
 }
 
@@ -277,10 +357,24 @@ fun UnifiedNavigationScreen(
 private fun MapLayer(state: NavSessionState, alpha: Float, modifier: Modifier = Modifier) {
     val context = LocalContext.current
 
-    val mapBitmap = remember {
+    val displayFloor = remember(state.currentFloor, state.isPausedForFloorTransition, state.pendingFloorTransition) {
+        if (state.isPausedForFloorTransition && state.pendingFloorTransition != null) {
+            state.pendingFloorTransition.fromFloor
+        } else {
+            state.currentFloor
+        }
+    }
+
+    val mapBitmap = remember(displayFloor) {
         runCatching {
-            context.assets.open("map2.png").use { BitmapFactory.decodeStream(it).asImageBitmap() }
+            context.assets.open(FloorMapAssets.mapAssetForFloor(displayFloor)).use {
+                BitmapFactory.decodeStream(it).asImageBitmap()
+            }
         }.getOrNull()
+    }
+
+    val floorPathNodes = remember(state.pathNodes, displayFloor) {
+        state.pathNodes.filter { it.floor == displayFloor }
     }
 
     if (mapBitmap == null) {
@@ -386,13 +480,20 @@ private fun MapLayer(state: NavSessionState, alpha: Float, modifier: Modifier = 
             translate(panOffset.x, panOffset.y)
             scale(mapScale, mapScale, Offset.Zero)
         }) {
-            drawImage(mapBitmap)
+            mapBitmap?.let { drawImage(it) }
         }
 
-        // 2. A* route path
-        val nodes = state.pathNodes
+        // 2. A* route path (current floor segment only)
+        val nodes = floorPathNodes
         if (nodes.size >= 2) {
+            val fullNodes = state.pathNodes
             val seg = state.segmentIdx
+            val segNode = fullNodes.getOrNull(seg)
+            val floorSegIdx = if (segNode != null && segNode.floor == displayFloor) {
+                nodes.indexOf(segNode).coerceAtLeast(0)
+            } else {
+                nodes.indexOfLast { fullNodes.indexOf(it) <= seg }.coerceAtLeast(0)
+            }
 
             val routePath = Path().apply {
                 val s = toCv(nodes[0].x, nodes[0].y)
@@ -407,11 +508,11 @@ private fun MapLayer(state: NavSessionState, alpha: Float, modifier: Modifier = 
             drawPath(routePath, PathShadow, style = Stroke(lineW * 1.6f, cap = StrokeCap.Round, join = StrokeJoin.Round))
             drawPath(routePath, PathColor, style = Stroke(lineW, cap = StrokeCap.Round, join = StrokeJoin.Round))
 
-            if (seg > 0) {
+            if (floorSegIdx > 0) {
                 val walked = Path().apply {
                     val s = toCv(nodes[0].x, nodes[0].y)
                     moveTo(s.x, s.y)
-                    for (i in 1..seg.coerceAtMost(nodes.size - 1)) {
+                    for (i in 1..floorSegIdx.coerceAtMost(nodes.size - 1)) {
                         val p = toCv(nodes[i].x, nodes[i].y)
                         lineTo(p.x, p.y)
                     }
@@ -421,20 +522,17 @@ private fun MapLayer(state: NavSessionState, alpha: Float, modifier: Modifier = 
 
             val r = (9f * mapScale).coerceIn(5f, 20f)
 
-            // Start marker (green)
             val sp = toCv(nodes.first().x, nodes.first().y)
             drawCircle(Color.White,  r * 1.6f, sp)
             drawCircle(StartGreen,   r, sp)
             drawCircle(Color.White,  r * 0.38f, sp)
 
-            // End marker (red)
             val ep = toCv(nodes.last().x, nodes.last().y)
             drawCircle(Color.White,  r * 1.8f, ep)
             drawCircle(EndRed,       r * 1.2f, ep)
             drawCircle(Color.White,  r * 0.42f, ep)
 
-            // Next waypoint pulse
-            nodes.getOrNull(seg + 1)?.let { nxt ->
+            nodes.getOrNull(floorSegIdx + 1)?.let { nxt ->
                 val np = toCv(nxt.x, nxt.y)
                 drawCircle(PathColor.copy(0.22f), r * 1.8f, np)
                 drawCircle(PathColor, r * 0.7f, np)

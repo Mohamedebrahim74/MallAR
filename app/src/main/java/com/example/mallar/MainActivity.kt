@@ -8,6 +8,11 @@ import android.os.Bundle
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import com.example.mallar.data.MallGraphRepository
+import com.example.mallar.data.PlaceRepository
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
@@ -45,6 +50,12 @@ class MainActivity : ComponentActivity() {
         // Initialize preference managers
         AppPreferences.init(this)
         FavoritesManager.init(this)
+        com.example.mallar.data.ParkingManager.init(this)
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            PlaceRepository.load(applicationContext)
+            MallGraphRepository.load(applicationContext)
+        }
 
         setContent {
             MallARTheme {
@@ -214,6 +225,9 @@ fun MallARNavGraph(context: Context) {
                 onMapClick = {
                     navController.navigate("static_map")
                 },
+                onSavedClick = {
+                    navController.navigate("saved_places")
+                },
                 onDestinationSelected = { place ->
                     // Save the chosen destination globally
                     NavigationState.selectedPlace = place
@@ -229,13 +243,19 @@ fun MallARNavGraph(context: Context) {
                 onSettingsClick = {
                     navController.navigate("profile")
                 },
-                onVoiceClick = {
-                    val target =
-                        if (NavigationState.selectedPlace != null) "logo_scan_with_dest" else "logo_scan"
+                onParkingClick = {
+                    navController.navigate("parking_home")
+                },
+                onScanClick = {
                     if (checkPermissionsGranted()) {
-                        navController.navigate(target)
+                        navController.navigate("logo_scan")
                     } else {
                         navController.navigate("permissions")
+                    }
+                },
+                onNavigateToNavigation = {
+                    navController.navigate("navigation") {
+                        popUpTo("home") { inclusive = false }
                     }
                 }
             )
@@ -249,9 +269,7 @@ fun MallARNavGraph(context: Context) {
             LogoScanScreen(
                 preselectedDestination = true,
                 onBackFromLogo = { navController.popBackStack() },
-                onSettingsClick  = {
-                    navController.navigate("profile")
-                },
+
                 onStoreSelected  = { isCameraMode ->
                     NavigationState.startWithAr = isCameraMode
                     navController.navigate("navigation") {
@@ -267,9 +285,7 @@ fun MallARNavGraph(context: Context) {
         composable("logo_scan") {
             LogoScanScreen(
                 onBackFromLogo = { navController.popBackStack() },
-                onSettingsClick = {
-                    navController.navigate("profile")
-                },
+
                 onStoreSelected = { isCameraMode ->
                     NavigationState.startWithAr = isCameraMode
                     navController.navigate("navigation")
@@ -281,6 +297,21 @@ fun MallARNavGraph(context: Context) {
         composable("static_map") {
             StaticMapScreen(
                 onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        // ── Saved / favorite places (from Home bottom nav) ────────────────────
+        composable("saved_places") {
+            SavedPlacesScreen(
+                onBackClick = { navController.popBackStack() },
+                onPlaceClick = { place ->
+                    NavigationState.selectedPlace = place
+                    if (checkPermissionsGranted()) {
+                        navController.navigate("logo_scan_with_dest")
+                    } else {
+                        navController.navigate("permissions")
+                    }
+                }
             )
         }
 
@@ -343,6 +374,47 @@ fun MallARNavGraph(context: Context) {
         // ── Navigation ────────────────────────────────────────────────────────
         composable("navigation") {
             UnifiedNavigationScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        // ── Parking Home ──────────────────────────────────────────────────────
+        composable("parking_home") {
+            ParkingHomeScreen(
+                onBackClick = { navController.popBackStack() },
+                onSaveLocationClick = { navController.navigate("parking_camera") },
+                onNavigateToCarClick = { navController.navigate("parking_map") },
+                onEditLocationClick = { navController.navigate("parking_scan_result") }
+            )
+        }
+
+        // ── Parking Camera ────────────────────────────────────────────────────
+        composable("parking_camera") {
+            ParkingCameraScreen(
+                onBackClick = { navController.popBackStack() },
+                onPhotoCaptured = {
+                    navController.navigate("parking_scan_result") {
+                        popUpTo("parking_camera") { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        // ── Parking Scan Result ────────────────────────────────────────────────
+        composable("parking_scan_result") {
+            ParkingScanResultScreen(
+                onBackClick = { navController.popBackStack() },
+                onSaveSuccess = {
+                    navController.navigate("parking_home") {
+                        popUpTo("parking_home") { inclusive = false }
+                    }
+                }
+            )
+        }
+
+        // ── Parking Map ───────────────────────────────────────────────────────
+        composable("parking_map") {
+            ParkingMapScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }

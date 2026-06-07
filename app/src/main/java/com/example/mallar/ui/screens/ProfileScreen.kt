@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.example.mallar.ui.components.StoreLogoContainer
 import com.example.mallar.data.AppPreferences
 import com.example.mallar.data.FavoritesManager
 import com.example.mallar.data.Place
@@ -54,7 +55,7 @@ fun ProfileScreen(
     val context = LocalContext.current
     val isDarkMode by AppPreferences.isDarkMode.collectAsState()
     val currentLang by AppPreferences.language.collectAsState()
-    val favoriteBrands by FavoritesManager.favorites.collectAsState()
+    val favoriteIds by FavoritesManager.favorites.collectAsState()
     val colorScheme = MaterialTheme.colorScheme
 
     // Load all places to match favorites
@@ -63,8 +64,8 @@ fun ProfileScreen(
         allPlaces = withContext(Dispatchers.IO) { PlaceRepository.load(context) }
     }
 
-    val favoritePlaces = remember(favoriteBrands, allPlaces) {
-        allPlaces.filter { favoriteBrands.contains(it.brand) }
+    val favoritePlaces = remember(favoriteIds, allPlaces) {
+        allPlaces.filter { favoriteIds.contains(it.id) }
     }
 
     // User info
@@ -204,7 +205,7 @@ fun ProfileScreen(
                         FavoriteStoreRow(
                             place = place,
                             colorScheme = colorScheme,
-                            onRemove = { FavoritesManager.removeFavorite(place.brand) }
+                            onRemove = { FavoritesManager.removeFavorite(place.id) }
                         )
                         if (index < favoritePlaces.lastIndex) {
                             HorizontalDivider(
@@ -452,22 +453,13 @@ private fun FavoriteStoreRow(
             .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(42.dp)
-                .background(
-                    Brush.linearGradient(listOf(Teal.copy(0.12f), TealLight.copy(0.06f))),
-                    RoundedCornerShape(12.dp)
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = place.brand.take(2).uppercase(),
-                color = Teal,
-                fontWeight = FontWeight.Bold,
-                fontSize = 14.sp
-            )
-        }
+        StoreLogoContainer(
+            place    = place,
+            modifier = Modifier.size(42.dp),
+            contentPadding = 5.dp,
+            fallbackTextSize = 14.sp,
+            cornerRadius = 12.dp,
+        )
 
         Spacer(modifier = Modifier.width(14.dp))
 

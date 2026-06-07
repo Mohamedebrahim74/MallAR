@@ -13,10 +13,19 @@ data class GraphNode(
     @SerializedName("id")       val id: Int,
     @SerializedName("x")        val x: Double,
     @SerializedName("y")        val y: Double,
+    @SerializedName("floor")    val floor: Int = 2,
     @SerializedName("shopId")   val shopId: Int?,
     @SerializedName("shopName") val shopName: String?,
-    @SerializedName("logo")     val logo: String?
-)
+    @SerializedName("logo")     val logo: String?,
+    @SerializedName("category") val category: String? = null,
+    @SerializedName("transitionType") val transitionType: String? = null,
+    @SerializedName("connectedFloor") val connectedFloor: Int? = null,
+    @SerializedName("transitionNodeId") val transitionNodeId: Int? = null,
+    @SerializedName("escalatorElevatorId") val escalatorElevatorId: Int? = null,
+) {
+    val isFloorTransition: Boolean
+        get() = transitionNodeId != null && connectedFloor != null
+}
 
 data class GraphEdge(
     @SerializedName("from") val from: Int,
@@ -47,6 +56,9 @@ enum class AStarDirection { STRAIGHT, LEFT, RIGHT, ARRIVED }
 // ── Repository ───────────────────────────────────────────────────────────────
 
 object MallGraphRepository {
+
+    /** Extra cost (px) when an edge connects two different floors (stairs/escalator). */
+    private const val INTER_FLOOR_PENALTY_PX = 80.0
 
     private var graph: MallGraph? = null
     var loadedGraph: MallGraph? = null  // public read-only access without context
@@ -163,7 +175,7 @@ object MallGraphRepository {
         for (e in graph.edges) {
             val a = nodeMap[e.from] ?: continue
             val b = nodeMap[e.to]   ?: continue
-            val w = euclidean(a, b)
+            val w = edgeWeight(a, b)
             adj.getOrPut(e.from) { mutableListOf() }.add(Pair(e.to,   w))
             adj.getOrPut(e.to)   { mutableListOf() }.add(Pair(e.from, w))
         }
@@ -202,6 +214,14 @@ object MallGraphRepository {
         val dx = a.x - b.x; val dy = a.y - b.y
         return sqrt(dx * dx + dy * dy)
     }
+
+    private fun edgeWeight(a: GraphNode, b: GraphNode): Double {
+        val base = euclidean(a, b)
+        return if (a.floor != b.floor) base + INTER_FLOOR_PENALTY_PX else base
+    }
+
+    fun floorForShop(graph: MallGraph, shopId: Int): Int =
+        nodeForShop(graph, shopId)?.floor ?: 2
 
     // ── Path reconstruction ──────────────────────────────────────────────────
 

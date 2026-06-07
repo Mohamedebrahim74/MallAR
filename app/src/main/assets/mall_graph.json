@@ -4,2231 +4,2574 @@
       "id": 1,
       "x": 1052.0,
       "y": 563.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 2,
       "x": 1034.0,
       "y": 563.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 3,
       "x": 1024.0,
       "y": 563.0,
+      "floor": 2,
       "shopId": 1,
       "shopName": "rosemary",
-      "logo": "logos/RoseMary.png"
+      "logo": "logos/RoseMary.png",
+      "category": "Perfumes& Cosmetics"
     },
     {
       "id": 4,
       "x": 1014.0,
       "y": 563.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 5,
       "x": 1004.0,
       "y": 563.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 6,
       "x": 995.0,
       "y": 563.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 7,
       "x": 995.0,
       "y": 573.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 8,
       "x": 975.0,
       "y": 573.0,
+      "floor": 2,
       "shopId": 2,
       "shopName": "Tissot",
-      "logo": "logos/Tissot.png"
+      "logo": "logos/Tissot.png",
+      "category": "Jewellery"
     },
     {
       "id": 9,
       "x": 955.0,
       "y": 573.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 10,
       "x": 935.0,
       "y": 573.0,
+      "floor": 2,
       "shopId": 3,
       "shopName": "Abdul Samad Al Qurashi",
-      "logo": "logos/Abdelsamad el qurashi.png"
+      "logo": "logos/Abdelsamad el qurashi.png",
+      "category": "Perfumes& Cosmetics"
     },
     {
       "id": 11,
       "x": 915.0,
       "y": 573.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 12,
       "x": 905.0,
       "y": 573.0,
+      "floor": 2,
       "shopId": 4,
       "shopName": "El Shaboury",
-      "logo": "logos/El Shaboury Watches.png"
+      "logo": "logos/El Shaboury Watches.png",
+      "category": "Jewellery"
     },
     {
       "id": 13,
       "x": 893.0,
       "y": 573.0,
+      "floor": 2,
       "shopId": 5,
       "shopName": "soon",
-      "logo": null
+      "logo": null,
+      "category": null
     },
     {
       "id": 14,
       "x": 882.0,
       "y": 562.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 15,
       "x": 869.0,
       "y": 562.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 16,
       "x": 842.0,
       "y": 562.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 17,
       "x": 824.0,
       "y": 562.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 18,
       "x": 816.0,
       "y": 570.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 19,
       "x": 796.0,
       "y": 570.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 20,
       "x": 776.0,
       "y": 570.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 22,
       "x": 764.0,
       "y": 560.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 23,
       "x": 764.0,
       "y": 540.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 24,
       "x": 764.0,
       "y": 520.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 25,
       "x": 764.0,
       "y": 500.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 26,
       "x": 764.0,
       "y": 480.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 27,
       "x": 764.0,
       "y": 460.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 28,
       "x": 764.0,
       "y": 440.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 29,
       "x": 764.0,
       "y": 420.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 30,
       "x": 764.0,
       "y": 402.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 31,
       "x": 744.0,
       "y": 402.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 32,
       "x": 724.0,
       "y": 402.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 33,
       "x": 704.0,
       "y": 402.0,
+      "floor": 2,
       "shopId": 7,
       "shopName": "Desigual",
-      "logo": "logos/Designual.png"
+      "logo": "logos/Designual.png",
+      "category": "Fashion"
     },
     {
       "id": 34,
       "x": 687.0,
       "y": 402.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 35,
       "x": 670.0,
       "y": 402.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 36,
       "x": 670.0,
       "y": 412.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 37,
       "x": 660.0,
       "y": 421.0,
+      "floor": 2,
       "shopId": 8,
       "shopName": "FOREVER 21",
-      "logo": "logos/Forever 21.png"
+      "logo": "logos/Forever 21.png",
+      "category": "Fashion"
     },
     {
       "id": 38,
       "x": 643.0,
       "y": 421.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 39,
       "x": 627.0,
       "y": 421.0,
+      "floor": 2,
       "shopId": 9,
       "shopName": "Eden Park",
-      "logo": "logos/EDEN PARK Paris.png"
+      "logo": "logos/EDEN PARK Paris.png",
+      "category": "Fashion"
     },
     {
       "id": 40,
       "x": 617.0,
       "y": 411.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 41,
       "x": 617.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 42,
       "x": 597.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": 10,
       "shopName": "Adidas Originals",
-      "logo": "logos/adidas.png"
+      "logo": "logos/adidas.png",
+      "category": "Fashion"
     },
     {
       "id": 43,
       "x": 577.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": 11,
       "shopName": "Adidas Kids",
-      "logo": "logos/adidas kids.png"
+      "logo": "logos/adidas kids.png",
+      "category": "Fashion"
     },
     {
       "id": 44,
       "x": 557.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 45,
       "x": 537.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": 12,
       "shopName": "Pinky Lollypop",
-      "logo": "logos/Pinky Lollypop.png"
+      "logo": "logos/Pinky Lollypop.png",
+      "category": "Fashion"
     },
     {
       "id": 46,
       "x": 517.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 47,
       "x": 497.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 48,
       "x": 477.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": 13,
       "shopName": "Moods",
-      "logo": "logos/moods.png"
+      "logo": "logos/moods.png",
+      "category": "Fashion"
     },
     {
       "id": 49,
       "x": 457.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": 14,
       "shopName": "BCBG",
-      "logo": "logos/BCBGMAXAZRIA.png"
+      "logo": "logos/BCBGMAXAZRIA.png",
+      "category": "Fashion"
     },
     {
       "id": 50,
       "x": 437.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": 15,
       "shopName": "Perspective",
-      "logo": "logos/perspective.png"
+      "logo": "logos/perspective.png",
+      "category": "Fashion"
     },
     {
       "id": 51,
       "x": 417.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": 16,
       "shopName": "Ao Optics",
-      "logo": null
+      "logo": null,
+      "category": "Fashion"
     },
     {
       "id": 52,
       "x": 397.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 53,
       "x": 377.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": 17,
       "shopName": "pronovias",
-      "logo": "logos/PRONOVIAS.png"
+      "logo": "logos/PRONOVIAS.png",
+      "category": "Fashion"
     },
     {
       "id": 54,
       "x": 357.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": 18,
       "shopName": "Femi",
-      "logo": "logos/femi.png"
+      "logo": "logos/femi.png",
+      "category": "Fashion"
     },
     {
       "id": 55,
       "x": 349.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 56,
       "x": 333.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": 19,
       "shopName": "Pinkberry",
-      "logo": "logos/pinkberry.png"
+      "logo": "logos/pinkberry.png",
+      "category": "Dining"
     },
     {
       "id": 57,
       "x": 313.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 58,
       "x": 593.0,
       "y": 401.0,
+      "floor": 2,
       "shopId": 20,
       "shopName": "women'secret",
-      "logo": "logos/women'secret.png"
+      "logo": "logos/Woman'secret.png",
+      "category": "Fashion"
     },
     {
       "id": 59,
       "x": 268.0,
       "y": 400.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 60,
       "x": 258.0,
       "y": 409.0,
+      "floor": 2,
       "shopId": 21,
       "shopName": "Pepla",
-      "logo": "logos/pepla.png"
+      "logo": "logos/Pepla.png",
+      "category": "Fashion"
     },
     {
       "id": 61,
       "x": 247.0,
       "y": 420.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 62,
       "x": 234.0,
       "y": 432.0,
+      "floor": 2,
       "shopId": 22,
       "shopName": "Sherwal",
-      "logo": "logos/sherwal.png"
+      "logo": "logos/Sherwal.png",
+      "category": "Fashion"
     },
     {
       "id": 63,
       "x": 212.0,
       "y": 433.0,
+      "floor": 2,
       "shopId": 23,
       "shopName": "Crocs",
-      "logo": "logos/Crocs.png"
+      "logo": "logos/Crocs.png",
+      "category": "Fashion"
     },
     {
       "id": 64,
       "x": 188.0,
       "y": 431.0,
+      "floor": 2,
       "shopId": 24,
       "shopName": "Mounir Nassif",
-      "logo": "logos/mounir-nassif.png"
+      "logo": "logos/mounir-nassif.png",
+      "category": "Fashion"
     },
     {
       "id": 65,
       "x": 170.0,
       "y": 413.0,
+      "floor": 2,
       "shopId": 25,
       "shopName": "Dubetta",
-      "logo": "logos/dubetta.png"
+      "logo": "logos/dubetta.png",
+      "category": "Fashion"
     },
     {
       "id": 66,
       "x": 170.0,
       "y": 393.0,
+      "floor": 2,
       "shopId": 26,
       "shopName": "Sixt",
-      "logo": "logos/sixt.png"
+      "logo": "logos/sixt.png",
+      "category": null
     },
     {
       "id": 67,
       "x": 170.0,
       "y": 369.0,
+      "floor": 2,
       "shopId": 27,
       "shopName": "My Secret",
-      "logo": "logos/my-secret.png"
+      "logo": "logos/my-secret.png",
+      "category": "Fashion"
     },
     {
       "id": 68,
       "x": 180.0,
       "y": 358.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 69,
       "x": 180.0,
       "y": 344.0,
+      "floor": 2,
       "shopId": 28,
       "shopName": "Najjaro",
-      "logo": "logos/najjaro.png"
+      "logo": "logos/najjaro.png",
+      "category": "Fashion"
     },
     {
       "id": 70,
       "x": 180.0,
       "y": 324.0,
+      "floor": 2,
       "shopId": 29,
       "shopName": "Cleo",
-      "logo": "logos/cleo.png"
+      "logo": "logos/cleo.png",
+      "category": "Fashion"
     },
     {
       "id": 71,
       "x": 180.0,
       "y": 304.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 72,
       "x": 180.0,
       "y": 284.0,
+      "floor": 2,
       "shopId": 30,
       "shopName": "In Your Shoes",
-      "logo": null
+      "logo": null,
+      "category": "Fashion"
     },
     {
       "id": 73,
       "x": 180.0,
       "y": 264.0,
+      "floor": 2,
       "shopId": 31,
       "shopName": "Taif Al Emarat",
-      "logo": "logos/taif-al-emarat.png"
+      "logo": "logos/TEIF AL Emarat.png",
+      "category": "Perfumes& Cosmetics"
     },
     {
       "id": 74,
       "x": 180.0,
       "y": 244.0,
+      "floor": 2,
       "shopId": 32,
       "shopName": "Tam's",
-      "logo": "logos/tam's.png"
+      "logo": "logos/Tam's.png",
+      "category": "Fashion"
     },
     {
       "id": 75,
       "x": 180.0,
       "y": 224.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 76,
       "x": 180.0,
       "y": 212.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 77,
       "x": 164.0,
       "y": 200.0,
+      "floor": 2,
       "shopId": 33,
       "shopName": "Starbucks",
-      "logo": "logos/Starbucks.png"
+      "logo": "logos/Starbucks.png",
+      "category": "Dining"
     },
     {
       "id": 78,
       "x": 144.0,
       "y": 200.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 79,
       "x": 124.0,
       "y": 200.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
-    },
-    {
-      "id": 80,
-      "x": 108.0,
-      "y": 200.0,
-      "shopId": null,
-      "shopName": null
-    },
-    {
-      "id": 81,
-      "x": 97.0,
-      "y": 212.0,
-      "shopId": null,
-      "shopName": null
-    },
-    {
-      "id": 82,
-      "x": 83.0,
-      "y": 212.0,
-      "shopId": null,
-      "shopName": null
-    },
-    {
-      "id": 83,
-      "x": 67.0,
-      "y": 212.0,
-      "shopId": 34,
-      "shopName": "Nail Couture",
-      "logo": null
-    },
-    {
-      "id": 84,
-      "x": 108.0,
-      "y": 159.0,
-      "shopId": 35,
-      "shopName": "Guru",
-      "logo": "logos/guru.png"
-    },
-    {
-      "id": 85,
-      "x": 125.0,
-      "y": 140.0,
-      "shopId": null,
-      "shopName": null
-    },
-    {
-      "id": 86,
-      "x": 141.0,
-      "y": 124.0,
-      "shopId": 36,
-      "shopName": "soon",
-      "logo": null
-    },
-    {
-      "id": 87,
-      "x": 155.0,
-      "y": 110.0,
-      "shopId": 37,
-      "shopName": "soon ",
-      "logo": null
-    },
-    {
-      "id": 88,
-      "x": 172.0,
-      "y": 95.0,
-      "shopId": 38,
-      "shopName": "American Eagle",
-      "logo": "logos/american eagle.png"
-    },
-    {
-      "id": 89,
-      "x": 197.0,
-      "y": 95.0,
-      "shopId": null,
-      "shopName": null
-    },
-    {
-      "id": 90,
-      "x": 213.0,
-      "y": 110.0,
-      "shopId": null,
-      "shopName": null
-    },
-    {
-      "id": 91,
-      "x": 228.0,
-      "y": 125.0,
-      "shopId": null,
-      "shopName": null
-    },
-    {
-      "id": 92,
-      "x": 245.0,
-      "y": 141.0,
-      "shopId": 39,
-      "shopName": "Alsharif Beaute",
-      "logo": "logos/el sharif beaute.png"
-    },
-    {
-      "id": 93,
-      "x": 259.0,
-      "y": 156.0,
-      "shopId": null,
-      "shopName": null
-    },
-    {
-      "id": 94,
-      "x": 259.0,
-      "y": 186.0,
-      "shopId": null,
-      "shopName": null
-    },
-    {
-      "id": 95,
-      "x": 279.0,
-      "y": 186.0,
-      "shopId": null,
-      "shopName": null
-    },
-    {
-      "id": 96,
-      "x": 299.0,
-      "y": 186.0,
-      "shopId": null,
-      "shopName": null
-    },
-    {
-      "id": 97,
-      "x": 316.0,
-      "y": 186.0,
-      "shopId": null,
-      "shopName": null
-    },
-    {
-      "id": 98,
-      "x": 329.0,
-      "y": 183.0,
-      "shopId": null,
-      "shopName": null
-    },
-    {
-      "id": 99,
-      "x": 342.0,
-      "y": 180.0,
-      "shopId": 40,
-      "shopName": "H & M",
-      "logo": "logos/H&M.png"
-    },
-    {
-      "id": 100,
-      "x": 353.0,
-      "y": 189.0,
-      "shopId": null,
-      "shopName": null
-    },
-    {
-      "id": 101,
-      "x": 363.0,
-      "y": 202.0,
-      "shopId": 41,
-      "shopName": "Jimmy Key",
-      "logo": "logos/jimmy key.png"
-    },
-    {
-      "id": 102,
-      "x": 349.0,
-      "y": 217.0,
-      "shopId": null,
-      "shopName": null
-    },
-    {
-      "id": 103,
-      "x": 349.0,
-      "y": 237.0,
-      "shopId": 42,
-      "shopName": "Coctail",
-      "logo": "logos/coctail.png"
-    },
-    {
-      "id": 104,
-      "x": 349.0,
-      "y": 257.0,
-      "shopId": 43,
-      "shopName": "Pistage",
-      "logo": "logos/pistage.png"
-    },
-    {
-      "id": 105,
-      "x": 349.0,
-      "y": 277.0,
-      "shopId": 44,
-      "shopName": "Koton",
-      "logo": "logos/koton.png"
-    },
-    {
-      "id": 106,
-      "x": 349.0,
-      "y": 297.0,
-      "shopId": null,
-      "shopName": null
-    },
-    {
-      "id": 107,
-      "x": 349.0,
-      "y": 317.0,
-      "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 108,
       "x": 349.0,
       "y": 337.0,
+      "floor": 2,
       "shopId": 45,
       "shopName": "La Vie En Rose ",
-      "logo": "logos/la vie en rose.png"
+      "logo": "logos/La Vie en Rose.png",
+      "category": "Fashion"
     },
     {
       "id": 109,
       "x": 349.0,
       "y": 357.0,
+      "floor": 2,
       "shopId": 57,
       "shopName": "Carpisa",
-      "logo": "logos/carpisa.png"
+      "logo": "logos/Carpisa.png",
+      "category": "Fashion"
     },
     {
       "id": 110,
       "x": 333.0,
       "y": 357.0,
+      "floor": 2,
       "shopId": 46,
       "shopName": "OMB",
-      "logo": "logos/omb.png"
+      "logo": "logos/OMB!.png",
+      "category": "Fashion"
     },
     {
       "id": 111,
       "x": 333.0,
       "y": 337.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 112,
       "x": 333.0,
       "y": 317.0,
+      "floor": 2,
       "shopId": 47,
       "shopName": "Marie France",
-      "logo": "logos/marie france.png"
+      "logo": "logos/Marie France.png",
+      "category": "Fashion"
     },
     {
       "id": 113,
       "x": 333.0,
       "y": 297.0,
+      "floor": 2,
       "shopId": 48,
       "shopName": "Palma",
-      "logo": "logos/palma.png"
+      "logo": "logos/palma.png",
+      "category": "Fashion"
     },
     {
       "id": 114,
       "x": 333.0,
       "y": 277.0,
+      "floor": 2,
       "shopId": 49,
       "shopName": "Lipsy London",
-      "logo": "logos/lipsy london.png"
+      "logo": "logos/Lipsy London.png",
+      "category": "Fashion"
     },
     {
       "id": 115,
       "x": 333.0,
       "y": 257.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 116,
       "x": 333.0,
       "y": 237.0,
+      "floor": 2,
       "shopId": 50,
       "shopName": "United Colors Of Benetton",
-      "logo": "logos/united colors of benetton.png"
+      "logo": "logos/United Colors Of Benetton.png",
+      "category": "Fashion"
     },
     {
       "id": 117,
       "x": 333.0,
       "y": 217.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 118,
       "x": 316.0,
       "y": 202.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 119,
       "x": 299.0,
       "y": 202.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 120,
       "x": 279.0,
       "y": 202.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 121,
       "x": 259.0,
       "y": 202.0,
+      "floor": 2,
       "shopId": 51,
       "shopName": "Mii",
-      "logo": "logos/mii.png"
+      "logo": "logos/MII.png",
+      "category": "Perfumes& Cosmetics"
     },
     {
       "id": 122,
       "x": 239.0,
       "y": 202.0,
+      "floor": 2,
       "shopId": 52,
       "shopName": "Lacoste",
-      "logo": "logos/lacoste.png"
+      "logo": "logos/Lacoste.png",
+      "category": "Fashion"
     },
     {
       "id": 123,
       "x": 216.0,
       "y": 202.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 124,
       "x": 196.0,
       "y": 212.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 125,
       "x": 196.0,
       "y": 224.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 126,
       "x": 196.0,
       "y": 244.0,
+      "floor": 2,
       "shopId": 53,
       "shopName": "Hijab Boutique",
-      "logo": "logos/hijab boutique.png"
+      "logo": "logos/hijab-boutique.png",
+      "category": "Fashion"
     },
     {
       "id": 127,
       "x": 196.0,
       "y": 264.0,
+      "floor": 2,
       "shopId": 54,
       "shopName": "New Balance",
-      "logo": "logos/new-balance.png"
+      "logo": "logos/New Balance.png",
+      "category": "Fashion"
     },
     {
       "id": 128,
       "x": 196.0,
       "y": 284.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 129,
       "x": 196.0,
       "y": 304.0,
+      "floor": 2,
       "shopId": 55,
       "shopName": "Pixi",
-      "logo": "logos/pixi.png"
+      "logo": "logos/PIXI.png",
+      "category": "Fashion"
     },
     {
       "id": 130,
       "x": 196.0,
       "y": 324.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 131,
       "x": 196.0,
       "y": 344.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 132,
       "x": 211.0,
       "y": 344.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 133,
       "x": 228.0,
       "y": 344.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 134,
       "x": 238.0,
       "y": 354.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 135,
       "x": 248.0,
       "y": 364.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 136,
       "x": 258.0,
       "y": 374.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 137,
       "x": 268.0,
       "y": 384.0,
+      "floor": 2,
       "shopId": 56,
       "shopName": "Aldo",
-      "logo": "logos/aldo.png"
+      "logo": "logos/ALDO.png",
+      "category": "Fashion"
     },
     {
       "id": 138,
       "x": 293.0,
       "y": 384.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 139,
       "x": 313.0,
       "y": 384.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 140,
       "x": 333.0,
       "y": 384.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 141,
       "x": 349.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 142,
       "x": 357.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 143,
       "x": 377.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 144,
       "x": 397.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 145,
       "x": 417.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 146,
       "x": 437.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": 58,
       "shopName": "BSB",
-      "logo": "logos/bsb.png"
+      "logo": "logos/BSB.png",
+      "category": "Fashion"
     },
     {
       "id": 147,
       "x": 457.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": 59,
       "shopName": "Prima Gold",
-      "logo": "logos/prima gold.png"
+      "logo": "logos/prima gold.png",
+      "category": "Jewellery"
     },
     {
       "id": 148,
       "x": 477.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": 60,
       "shopName": "Luisa Spagnoli",
-      "logo": "logos/luisa spagnoli.png"
+      "logo": "logos/luisa spagnoli.png",
+      "category": "Fashion"
     },
     {
       "id": 149,
       "x": 397.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 150,
       "x": 517.0,
       "y": 387.0,
+      "floor": 2,
       "shopId": 61,
       "shopName": "HunkeMoller",
-      "logo": "logos/hunkemoller.png"
+      "logo": "logos/Hunkemoller.png",
+      "category": "Fashion"
     },
     {
       "id": 151,
       "x": 537.0,
       "y": 387.0,
+      "floor": 2,
       "shopId": 62,
       "shopName": "Gerry Weber",
-      "logo": "logos/gerry-weber.png"
+      "logo": "logos/GERRY WEBER.png",
+      "category": "Fashion"
     },
     {
       "id": 152,
       "x": 557.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 153,
       "x": 577.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": 63,
       "shopName": "soon",
-      "logo": null
+      "logo": null,
+      "category": null
     },
     {
       "id": 154,
       "x": 597.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": 64,
       "shopName": "bebe",
-      "logo": "logos/bebe.png"
+      "logo": "logos/bebe.png",
+      "category": "Fashion"
     },
     {
       "id": 155,
       "x": 616.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 156,
       "x": 617.0,
       "y": 375.0,
+      "floor": 2,
       "shopId": 65,
       "shopName": "Marina Rinaldi",
-      "logo": "logos/marina rinaldi.png"
+      "logo": "logos/MARINA RINALDI.png",
+      "category": "Fashion"
     },
     {
       "id": 157,
       "x": 626.0,
       "y": 369.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 158,
       "x": 643.0,
       "y": 369.0,
+      "floor": 2,
       "shopId": 66,
       "shopName": "Mystic",
-      "logo": null
+      "logo": "Mystic.jpg",
+      "category": "Fashion"
     },
     {
       "id": 159,
       "x": 661.0,
       "y": 369.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 160,
       "x": 671.0,
       "y": 377.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 161,
       "x": 671.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 162,
       "x": 704.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": 67,
       "shopName": "Stradivarius",
-      "logo": "logos/stradivarius.png"
+      "logo": "logos/STRADIVARIUS.png",
+      "category": "Fashion"
     },
     {
       "id": 163,
       "x": 724.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 164,
       "x": 744.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 165,
       "x": 764.0,
       "y": 386.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 166,
       "x": 764.0,
       "y": 365.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 167,
       "x": 764.0,
       "y": 345.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 168,
       "x": 764.0,
       "y": 325.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 169,
       "x": 764.0,
       "y": 305.0,
+      "floor": 2,
       "shopId": 68,
       "shopName": "Zara",
-      "logo": "logos/Zara.png"
+      "logo": "logos/ZARA.png",
+      "category": "Fashion"
     },
     {
       "id": 170,
       "x": 764.0,
       "y": 285.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 171,
       "x": 764.0,
       "y": 265.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 172,
       "x": 764.0,
       "y": 245.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 173,
       "x": 764.0,
       "y": 225.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 174,
       "x": 764.0,
       "y": 205.0,
+      "floor": 2,
       "shopId": 69,
       "shopName": "Reserved",
-      "logo": "logos/Reserved.png"
+      "logo": "logos/Reserved.png",
+      "category": "Fashion"
     },
     {
       "id": 175,
       "x": 764.0,
       "y": 185.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 176,
       "x": 764.0,
       "y": 165.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 177,
       "x": 764.0,
       "y": 159.0,
+      "floor": 2,
       "shopId": 70,
       "shopName": "Bershka",
-      "logo": "logos/Bershka.png"
+      "logo": "logos/Bershka.png",
+      "category": "Fashion"
     },
     {
       "id": 178,
       "x": 804.0,
       "y": 159.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 179,
       "x": 824.0,
       "y": 159.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 180,
       "x": 844.0,
       "y": 159.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 181,
       "x": 865.0,
       "y": 159.0,
+      "floor": 2,
       "shopId": 71,
       "shopName": "Kiko Milano",
-      "logo": "logos/KIKO MILANO.png"
+      "logo": "logos/Kiko Milano.png",
+      "category": "Perfumes& Cosmetics"
     },
     {
       "id": 182,
       "x": 884.0,
       "y": 159.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 183,
       "x": 904.0,
       "y": 159.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 184,
       "x": 912.0,
       "y": 147.0,
+      "floor": 2,
       "shopId": 72,
       "shopName": "Oxygen",
-      "logo": "logos/OXYGENE.png"
+      "logo": "logos/Oxygene.png",
+      "category": "Fashion"
     },
     {
       "id": 185,
       "x": 930.0,
       "y": 147.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 186,
       "x": 948.0,
       "y": 147.0,
+      "floor": 2,
       "shopId": 73,
       "shopName": "Esla",
-      "logo": "logos/ESLA.png"
+      "logo": "logos/ESLA.png",
+      "category": "Fashion"
     },
     {
       "id": 187,
       "x": 966.0,
       "y": 147.0,
+      "floor": 2,
       "shopId": 74,
       "shopName": "OXXO",
-      "logo": "logos/OXXO.png"
+      "logo": "logos/OXXO.png",
+      "category": "Fashion"
     },
     {
       "id": 188,
       "x": 984.0,
       "y": 147.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 189,
       "x": 1002.0,
       "y": 147.0,
+      "floor": 2,
       "shopId": 75,
       "shopName": "Mazaya",
-      "logo": "logos/Mazaya.png"
+      "logo": "logos/Mazaya.png",
+      "category": "Perfumes& Cosmetics"
     },
     {
       "id": 190,
       "x": 1029.0,
       "y": 147.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 191,
       "x": 1045.0,
       "y": 147.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 192,
       "x": 1061.0,
       "y": 155.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 193,
       "x": 1086.0,
       "y": 155.0,
+      "floor": 2,
       "shopId": 76,
       "shopName": "Lefties",
-      "logo": "logos/Lefties.png"
+      "logo": "logos/lefties.png",
+      "category": "Fashion"
     },
     {
       "id": 194,
       "x": 1109.0,
       "y": 155.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 195,
       "x": 1109.0,
       "y": 172.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 196,
       "x": 1086.0,
       "y": 172.0,
+      "floor": 2,
       "shopId": 77,
       "shopName": "Carina",
-      "logo": "logos/Carina.png"
+      "logo": "logos/Carina.png",
+      "category": "Fashion"
     },
     {
       "id": 197,
       "x": 1061.0,
       "y": 172.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 198,
       "x": 1045.0,
       "y": 186.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 199,
       "x": 1045.0,
       "y": 206.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 200,
       "x": 1045.0,
       "y": 226.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 201,
       "x": 1045.0,
       "y": 246.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 202,
       "x": 1045.0,
       "y": 266.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 203,
       "x": 1045.0,
       "y": 286.0,
-      "shopId": 78,
-      "shopName": "Or",
-      "logo": "logos/OR.png"
+      "floor": 2,
+      "shopId": 103,
+      "shopName": "DalyDress",
+      "logo": "logos/DALY DRESS.png",
+      "category": "Fashion"
     },
     {
       "id": 204,
       "x": 1045.0,
       "y": 306.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 205,
       "x": 1045.0,
       "y": 326.0,
-      "shopId": 79,
-      "shopName": "Twenty Three",
-      "logo": "logos/twenty three.png"
+      "floor": 2,
+      "shopId": null,
+      "shopName": null,
+      "category": null
     },
     {
       "id": 206,
       "x": 1045.0,
       "y": 346.0,
-      "shopId": 80,
-      "shopName": "ASTK",
-      "logo": "logos/astk.png"
+      "floor": 2,
+      "shopId": null,
+      "shopName": null,
+      "category": null
     },
     {
       "id": 207,
       "x": 1045.0,
       "y": 366.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 208,
       "x": 1045.0,
       "y": 382.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 209,
       "x": 1055.0,
       "y": 382.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 210,
       "x": 1055.0,
       "y": 407.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 211,
       "x": 1045.0,
       "y": 407.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 212,
       "x": 1045.0,
       "y": 423.0,
+      "floor": 2,
       "shopId": 81,
       "shopName": "Frillu",
-      "logo": "logos/frillu.png"
+      "logo": "logos/FRILLU.png",
+      "category": "Fashion"
     },
     {
       "id": 213,
       "x": 1045.0,
       "y": 443.0,
+      "floor": 2,
       "shopId": 82,
       "shopName": "Seif Pharmacy",
-      "logo": "logos/seif pharmacy.png"
+      "logo": "logos/seif pharmacy.png",
+      "category": "Pharmacy"
     },
     {
       "id": 214,
       "x": 1045.0,
       "y": 463.0,
+      "floor": 2,
       "shopId": 83,
       "shopName": "SBR",
-      "logo": "logos/sbr.png"
+      "logo": "logos/S.B.R.png",
+      "category": "Fashion"
     },
     {
       "id": 215,
       "x": 1045.0,
       "y": 483.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 216,
       "x": 1045.0,
       "y": 503.0,
+      "floor": 2,
       "shopId": 84,
       "shopName": "Venti",
-      "logo": "logos/venti.png"
+      "logo": "logos/Venti.png",
+      "category": "Fashion"
     },
     {
       "id": 217,
       "x": 1045.0,
       "y": 523.0,
+      "floor": 2,
       "shopId": 85,
       "shopName": "Teela",
-      "logo": "logos/teela.png"
+      "logo": "logos/Teela.png",
+      "category": "Fashion"
     },
     {
       "id": 218,
       "x": 1045.0,
       "y": 530.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 219,
       "x": 1034.0,
       "y": 538.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 220,
       "x": 1027.0,
       "y": 530.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 221,
       "x": 1007.0,
       "y": 530.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 222,
       "x": 987.0,
       "y": 530.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 223,
       "x": 967.0,
       "y": 530.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 224,
       "x": 947.0,
       "y": 530.0,
+      "floor": 2,
       "shopId": 86,
       "shopName": "BTC",
-      "logo": "logos/BTC.png"
+      "logo": "logos/BTC.png",
+      "category": "Jewellery"
     },
     {
       "id": 225,
       "x": 924.0,
       "y": 530.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 226,
       "x": 904.0,
       "y": 530.0,
+      "floor": 2,
       "shopId": 87,
       "shopName": "Doctor M",
-      "logo": "logos/Doctor M.png"
+      "logo": "logos/Doctor M.png",
+      "category": "Fashion"
     },
     {
       "id": 227,
       "x": 882.0,
       "y": 540.0,
+      "floor": 2,
       "shopId": 88,
       "shopName": "Puma",
-      "logo": "logos/Puma.png"
+      "logo": "logos/PUMA.png",
+      "category": "Fashion"
     },
     {
       "id": 228,
       "x": 569.0,
       "y": 540.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 229,
       "x": 842.0,
       "y": 540.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 230,
       "x": 835.0,
       "y": 540.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 231,
       "x": 820.0,
       "y": 526.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 232,
       "x": 820.0,
       "y": 506.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 233,
       "x": 820.0,
       "y": 486.0,
+      "floor": 2,
       "shopId": 89,
       "shopName": "Miss L",
-      "logo": "logos/Miss L.png"
+      "logo": "logos/Miss L.png",
+      "category": "Jewellery"
     },
     {
       "id": 234,
       "x": 820.0,
       "y": 466.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 235,
       "x": 820.0,
       "y": 466.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 236,
       "x": 820.0,
       "y": 419.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 237,
       "x": 787.0,
       "y": 419.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 238,
       "x": 775.0,
       "y": 419.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 239,
       "x": 775.0,
       "y": 402.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 240,
       "x": 837.0,
       "y": 418.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 241,
       "x": 857.0,
       "y": 418.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 242,
       "x": 857.0,
       "y": 441.0,
+      "floor": 2,
       "shopId": 90,
       "shopName": "Brioche Doree",
-      "logo": "logos/Brioche Doree.png"
+      "logo": "logos/Brioche Doree.png",
+      "category": "Dining"
     },
     {
       "id": 243,
       "x": 872.0,
       "y": 458.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 244,
       "x": 890.0,
       "y": 475.0,
+      "floor": 2,
       "shopId": 91,
       "shopName": "Fayroza Jewellary",
-      "logo": "logos/Ferozah.png"
+      "logo": "logos/Ferozah.png",
+      "category": "Jewellery"
     },
     {
       "id": 245,
       "x": 903.0,
       "y": 475.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 246,
       "x": 916.0,
       "y": 475.0,
+      "floor": 2,
       "shopId": 92,
       "shopName": "The Scarf Store",
-      "logo": "logos/The Scarf Store.png"
+      "logo": "logos/The Scarf Store.png",
+      "category": "Fashion"
     },
     {
       "id": 247,
       "x": 933.0,
       "y": 458.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 248,
       "x": 950.0,
       "y": 441.0,
+      "floor": 2,
       "shopId": 93,
       "shopName": "Mango",
-      "logo": "logos/Mango.png"
+      "logo": "logos/Mango.png",
+      "category": "Fashion"
     },
     {
       "id": 249,
       "x": 965.0,
       "y": 426.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 250,
       "x": 980.0,
       "y": 414.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 251,
       "x": 1015.0,
       "y": 414.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 252,
       "x": 1015.0,
       "y": 378.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 253,
       "x": 984.0,
       "y": 377.0,
+      "floor": 2,
       "shopId": 94,
       "shopName": "Converse ",
-      "logo": "logos/Converse.png"
+      "logo": "logos/Converse.png",
+      "category": "Fashion"
     },
     {
       "id": 254,
       "x": 971.0,
       "y": 365.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 255,
       "x": 958.0,
       "y": 351.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 256,
       "x": 944.0,
       "y": 337.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 257,
       "x": 931.0,
       "y": 324.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 258,
       "x": 921.0,
       "y": 314.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 259,
       "x": 905.0,
       "y": 314.0,
+      "floor": 2,
       "shopId": 95,
       "shopName": "Pull & Bear",
-      "logo": "logos/Pull & Bear.png"
+      "logo": "logos/Pull & Bear.png",
+      "category": "Fashion"
     },
     {
       "id": 260,
       "x": 890.0,
       "y": 314.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 261,
       "x": 874.0,
       "y": 328.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 262,
       "x": 858.0,
       "y": 343.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 263,
       "x": 858.0,
       "y": 358.0,
+      "floor": 2,
       "shopId": 96,
       "shopName": "Starbucks",
-      "logo": "logos/Starbucks.png"
+      "logo": "logos/Starbucks.png",
+      "category": "Dining"
     },
     {
       "id": 264,
       "x": 847.0,
       "y": 370.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 265,
       "x": 838.0,
       "y": 370.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 266,
       "x": 830.0,
       "y": 370.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 267,
       "x": 787.0,
       "y": 370.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 268,
       "x": 788.0,
       "y": 385.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 269,
       "x": 823.0,
       "y": 360.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 270,
       "x": 823.0,
       "y": 340.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 271,
       "x": 823.0,
       "y": 320.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 272,
       "x": 823.0,
       "y": 300.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 273,
       "x": 823.0,
       "y": 280.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 274,
       "x": 823.0,
       "y": 260.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 275,
       "x": 823.0,
       "y": 240.0,
+      "floor": 2,
       "shopId": 97,
       "shopName": "Mobaco Cottons",
-      "logo": "logos/Mobaco Cottons.png"
+      "logo": "logos/MOBACO COTTONS.png",
+      "category": "Fashion"
     },
     {
       "id": 276,
       "x": 823.0,
       "y": 220.0,
+      "floor": 2,
       "shopId": 98,
       "shopName": "Nile Eyewear",
-      "logo": "logos/nile eyewear.png"
+      "logo": "logos/Nile Eyewear.png",
+      "category": "Fashion"
     },
     {
       "id": 277,
       "x": 823.0,
       "y": 200.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 278,
       "x": 823.0,
       "y": 188.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 279,
       "x": 836.0,
       "y": 174.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 280,
       "x": 844.0,
       "y": 174.0,
+      "floor": 2,
       "shopId": 99,
       "shopName": "Sunglass Hut",
-      "logo": "logos/sunglass hut.png"
+      "logo": "logos/sunglass hut.png",
+      "category": "Fashion"
     },
     {
       "id": 281,
       "x": 867.0,
       "y": 174.0,
+      "floor": 2,
       "shopId": 100,
       "shopName": "Pandora",
-      "logo": "logos/pandora.png"
+      "logo": "logos/pandora.png",
+      "category": "Jewellery"
     },
     {
       "id": 282,
       "x": 884.0,
       "y": 174.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 283,
       "x": 904.0,
       "y": 174.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 284,
       "x": 904.0,
       "y": 185.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 285,
       "x": 930.0,
       "y": 185.0,
+      "floor": 2,
       "shopId": 101,
       "shopName": "Rojada",
-      "logo": "logos/Rojada.png"
+      "logo": "logos/Rojada.png",
+      "category": "Fashion"
     },
     {
       "id": 286,
       "x": 948.0,
       "y": 185.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 287,
       "x": 966.0,
       "y": 185.0,
+      "floor": 2,
       "shopId": 102,
       "shopName": "Colin's",
-      "logo": "logos/Colin's.png"
+      "logo": "logos/Colin's.png",
+      "category": "Fashion"
     },
     {
       "id": 288,
       "x": 984.0,
       "y": 185.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 289,
       "x": 1002.0,
       "y": 185.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 290,
       "x": 1029.0,
       "y": 185.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 291,
       "x": 1029.0,
       "y": 205.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 292,
       "x": 1029.0,
       "y": 226.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 293,
       "x": 1029.0,
       "y": 246.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 294,
       "x": 1029.0,
       "y": 266.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 295,
       "x": 1029.0,
       "y": 286.0,
+      "floor": 2,
       "shopId": 103,
       "shopName": "DalyDress",
-      "logo": "logos/dalydress.png"
+      "logo": "logos/DALY DRESS.png",
+      "category": "Fashion"
     },
     {
       "id": 296,
       "x": 1029.0,
       "y": 306.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 297,
       "x": 1029.0,
       "y": 326.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 298,
       "x": 1029.0,
       "y": 346.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 299,
       "x": 1029.0,
       "y": 361.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 300,
       "x": 1027.0,
       "y": 423.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 301,
       "x": 1027.0,
       "y": 443.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 302,
       "x": 1027.0,
       "y": 463.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 303,
       "x": 1027.0,
       "y": 483.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 304,
       "x": 1027.0,
       "y": 503.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     },
     {
       "id": 305,
       "x": 1027.0,
       "y": 523.0,
+      "floor": 2,
       "shopId": null,
-      "shopName": null
+      "shopName": null,
+      "category": null
     }
   ],
   "edges": [

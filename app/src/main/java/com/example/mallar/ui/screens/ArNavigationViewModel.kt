@@ -1,3 +1,4 @@
+/*
 package com.example.mallar.ui.screens
 
 import androidx.lifecycle.ViewModel
@@ -47,17 +48,21 @@ data class ArNavigationUiState(
     val navigationPhase: NavigationPhase = NavigationPhase.SCANNING,
     val startPinReady: Boolean = false,
 
-    /**
+    */
+/**
      * Distance (m) from the camera to the start-pin anchor.
      * Shown so the user knows how far they still need to walk.
-     */
+     *//*
+
     val distToStartPinM: Float = Float.MAX_VALUE,
 
     // ── Manual calibration ────────────────────────────────────────────────────
-    /**
+    */
+/**
      * True while the user is in MANUAL_CALIBRATION phase and needs to
      * point their phone toward the destination.
-     */
+     *//*
+
     val awaitingManualDirectionConfirm: Boolean = false,
 
     // ── Debug overlay (optional — toggle via showDebugOverlay) ────────────────
@@ -67,9 +72,13 @@ data class ArNavigationUiState(
     val debugAppliedOffset: Float = 0f,
 
     // ── Step tracking ───────────────────────────────────────────────────────────────
-    /** Total steps counted this navigation session (hardware or software). */
+    */
+/** Total steps counted this navigation session (hardware or software). *//*
+
     val sessionStepCount: Long = 0L,
-    /** Estimated distance walked via dead-reckoning (metres). */
+    */
+/** Estimated distance walked via dead-reckoning (metres). *//*
+
     val sessionDistanceM: Float = 0f
 )
 
@@ -146,7 +155,9 @@ class ArNavigationViewModel : ViewModel() {
 
     // ── Phase transitions ─────────────────────────────────────────────────────
 
-    /** Called once the anchor + start pin are placed. */
+    */
+/** Called once the anchor + start pin are placed. *//*
+
     fun onStartPinPlaced() {
         _uiState.update {
             it.copy(
@@ -157,15 +168,19 @@ class ArNavigationViewModel : ViewModel() {
         }
     }
 
-    /** Called every frame with camera distance from start-pin anchor. */
+    */
+/** Called every frame with camera distance from start-pin anchor. *//*
+
     fun updateDistToStartPin(distM: Float) {
         _uiState.update { it.copy(distToStartPinM = distM) }
     }
 
-    /**
+    */
+/**
      * Called from the "I'm Here" button once the user has walked to the pin.
      * Transitions to MANUAL_CALIBRATION when close enough.
-     */
+     *//*
+
     fun onUserConfirmedStart(result: StartResult) {
         when (result) {
             is StartResult.Ok -> {
@@ -187,7 +202,9 @@ class ArNavigationViewModel : ViewModel() {
         }
     }
 
-    /** Called when the manager successfully locks the manual calibration. */
+    */
+/** Called when the manager successfully locks the manual calibration. *//*
+
     fun onManualCalibrationConfirmed() {
         _uiState.update {
             it.copy(
@@ -198,7 +215,9 @@ class ArNavigationViewModel : ViewModel() {
         }
     }
 
-    /** Called when manual calibration fails (wrong phase, etc.). */
+    */
+/** Called when manual calibration fails (wrong phase, etc.). *//*
+
     fun onManualCalibrationFailed() {
         updateStatusText("⚠️ Calibration failed — please try again")
     }
@@ -264,14 +283,16 @@ class ArNavigationViewModel : ViewModel() {
         }
     }
 
-    /**
+    */
+/**
      * Called from StepTracker.onStep via DisposableEffect in the Screen.
      *
      * Updates session step count and dead-reckoning distance in the UI.
      * The actual position advance is handled by IndoorPositionTracker
      * (via NavigationEngine.onStep) in a full integration.
      * Here we just persist the stats for display.
-     */
+     *//*
+
     fun onStepDetected(totalSteps: Long, distanceMetres: Float) {
         _uiState.update {
             it.copy(
@@ -376,4 +397,4 @@ class ArNavigationViewModel : ViewModel() {
 
         return items
     }
-}
+}*/

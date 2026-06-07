@@ -6,7 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -27,12 +27,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.example.mallar.data.Place
 import com.example.mallar.data.PlaceRepository
+import com.example.mallar.ui.components.StoreLogoContainer
 import com.example.mallar.ui.theme.*
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
 fun StoreSearchScreen(
@@ -40,12 +40,16 @@ fun StoreSearchScreen(
     onBackClick: () -> Unit
 ) {
     val context = LocalContext.current
-    val allPlaces = remember { PlaceRepository.load(context) }
+    var allPlaces by remember { mutableStateOf<List<Place>>(emptyList()) }
     var searchQuery by remember { mutableStateOf("") }
     val isDarkMode by com.example.mallar.data.AppPreferences.isDarkMode.collectAsState(initial = false)
     val colorScheme = MaterialTheme.colorScheme
 
-    val filteredPlaces = remember(searchQuery) {
+    LaunchedEffect(Unit) {
+        allPlaces = withContext(Dispatchers.IO) { PlaceRepository.load(context) }
+    }
+
+    val filteredPlaces = remember(searchQuery, allPlaces) {
         if (searchQuery.isBlank()) allPlaces
         else allPlaces.filter { it.brand.contains(searchQuery, ignoreCase = true) }
     }
@@ -137,10 +141,9 @@ fun StoreSearchScreen(
                         }
                     }
                 } else {
-                    itemsIndexed(filteredPlaces) { index, place ->
+                    items(filteredPlaces, key = { it.id }) { place ->
                         StoreCard(
                             place = place,
-                            index = index,
                             onClick = { onStoreClick(place) }
                         )
                     }
@@ -153,51 +156,28 @@ fun StoreSearchScreen(
 @Composable
 private fun StoreCard(
     place: Place,
-    index: Int,
     onClick: () -> Unit
 ) {
     val colorScheme = MaterialTheme.colorScheme
-    var isVisible by remember { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        delay(index * 60L)
-        isVisible = true
-    }
 
-    AnimatedVisibility(
-        visible = isVisible,
-        enter = fadeIn(tween(300)) + slideInVertically(tween(300)) { it / 4 }
+    Surface(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(2.dp, RoundedCornerShape(20.dp)),
+        shape = RoundedCornerShape(20.dp),
+        color = colorScheme.surfaceVariant
     ) {
-        Surface(
-            onClick = onClick,
-            modifier = Modifier
-                .fillMaxWidth()
-                .shadow(2.dp, RoundedCornerShape(20.dp)),
-            shape = RoundedCornerShape(20.dp),
-            color = colorScheme.surfaceVariant
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier.padding(12.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Store logo from assets
-                Surface(
-                    modifier = Modifier.size(60.dp),
-                    shape = RoundedCornerShape(14.dp),
-                    color = colorScheme.background
-                ) {
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data("file:///android_asset/${place.logo}")
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = place.brand,
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(RoundedCornerShape(14.dp))
-                            .padding(6.dp)
-                    )
-                }
+            StoreLogoContainer(
+                place    = place,
+                modifier = Modifier.size(68.dp),
+                contentPadding = 2.dp,
+                cornerRadius = 14.dp,
+            )
 
                 Spacer(modifier = Modifier.width(14.dp))
 
@@ -238,8 +218,7 @@ private fun StoreCard(
                     }
                 }
 
-                Icon(Icons.Filled.ChevronRight, contentDescription = null, tint = colorScheme.onSurfaceVariant)
-            }
+            Icon(Icons.Filled.ChevronRight, contentDescription = null, tint = colorScheme.onSurfaceVariant)
         }
     }
 }

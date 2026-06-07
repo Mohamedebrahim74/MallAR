@@ -54,7 +54,7 @@ class SpeechRecognitionManager(private val context: Context) {
     val isListening: StateFlow<Boolean> = _isListening.asStateFlow()
 
     // ── Callbacks ─────────────────────────────────────────────────────────────
-    var onResult: ((transcript: String, isArabic: Boolean) -> Unit)? = null
+    var onResult: ((transcript: String, isArabic: Boolean, alternatives: List<String>) -> Unit)? = null
     var onError: ((errorCode: Int, message: String) -> Unit)? = null
     var onReadyForSpeech: (() -> Unit)? = null
 
@@ -97,8 +97,10 @@ class SpeechRecognitionManager(private val context: Context) {
             putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", arrayOf(altLang))
             putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
             putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3)
-            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 1500L)
-            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 1000L)
+            // FIX
+            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 800L)
+            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 600L)
+            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 300L) // ADD: ignore sub-300ms noise
         }
 
         _partialResult.value = ""
@@ -156,17 +158,30 @@ class SpeechRecognitionManager(private val context: Context) {
             Log.v(TAG, "Partial: $partial")
         }
 
+        // FIX — replace onResults() in buildListener()
         override fun onResults(results: Bundle?) {
             _isListening.value = false
             val candidates = results
                 ?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 ?: run { onError?.invoke(-1, "No results"); return }
 
-            val best = candidates.firstOrNull() ?: return
+            val confidences = results.getFloatArray(SpeechRecognizer.CONFIDENCE_SCORES)
+
+            // Pick best candidate: highest confidence that contains recognisable text
+            val best = if (confidences != null && candidates.size == confidences.size) {
+                candidates.zip(confidences.toList())
+                    .maxByOrNull { (_, conf) -> conf }
+                    ?.first ?: candidates.first()
+            } else {
+                candidates.first()
+            }
+
             val arabic = isArabicText(best)
-            Log.d(TAG, "Final result: \"$best\" (arabic=$arabic)")
+            Log.d(TAG, "Final result: \"$best\" (arabic=$arabic, candidates=${candidates.size})")
             _partialResult.value = ""
-            onResult?.invoke(best, arabic)
+
+            // Pass ALL candidates so VoiceAssistantManager can try fallbacks
+            onResult?.invoke(best, arabic, candidates)
         }
 
         override fun onError(error: Int) {
