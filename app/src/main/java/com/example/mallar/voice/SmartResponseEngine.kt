@@ -4,7 +4,7 @@ import com.example.mallar.data.AStarPath
 import com.example.mallar.data.MallGraph
 import com.example.mallar.navigation.NavSessionState
 import com.example.mallar.overlay.OverlayTurnDirection
-import com.example.mallar.ui.screens.NavigationState
+import com.example.mallar.ui.localization.NavigationState
 import kotlin.math.roundToInt
 
 /**

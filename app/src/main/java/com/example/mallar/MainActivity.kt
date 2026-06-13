@@ -23,7 +23,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mallar.data.AppPreferences
 import com.example.mallar.data.FavoritesManager
-import com.example.mallar.ui.screens.*
+import com.example.mallar.ui.navigation.*
+import com.example.mallar.ui.splash.SplashScreen
+import com.example.mallar.ui.auth.*
+import com.example.mallar.ui.profile.*
+import com.example.mallar.ui.parking.*
+import com.example.mallar.ui.home.*
+import com.example.mallar.ui.localization.*
 import com.example.mallar.ui.theme.MallARTheme
 import java.util.Locale
 

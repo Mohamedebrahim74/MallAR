@@ -2,7 +2,7 @@ package com.example.mallar.voice
 
 import com.example.mallar.navigation.NavSessionState
 import com.example.mallar.overlay.OverlayTurnDirection
-import com.example.mallar.ui.screens.NavigationState
+import com.example.mallar.ui.localization.NavigationState
 
 /**
  * Live turn guidance driven by [NavSessionState] (map + AR). Offline, no APIs.

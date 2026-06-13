@@ -33,6 +33,7 @@
     <string name="search">Search</string>
     <string name="no_stores_found">No stores found</string>
 
+
     <!-- AR Navigation -->
     <string name="direction_left">✈ LEFT: </string>
     <string name="show_road">Show Road →</string>

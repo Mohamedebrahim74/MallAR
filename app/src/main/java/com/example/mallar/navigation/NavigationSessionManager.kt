@@ -18,6 +18,8 @@ private const val TAG = "NavSessionManager"
 
 enum class NavMode { MAP, CAMERA }
 
+enum class NavigationModeSelection { AUTO, AR, MAP }
+
 data class NavSessionState(
     val pathNodes: List<GraphNode>    = emptyList(),
     val segmentIdx: Int               = 0,
@@ -31,6 +33,7 @@ data class NavSessionState(
     val remainingDistanceM: Int       = 0,
     val walkMinutes: Int              = 0,
     val mode: NavMode                 = NavMode.MAP,
+    val modeSelection: NavigationModeSelection = NavigationModeSelection.AUTO,
     val projectedPoints: List<ProjectedPoint> = emptyList(),
     val turnInfo: TurnInfo?           = null,
     val isRerouting: Boolean          = false,
@@ -184,6 +187,23 @@ class NavigationSessionManager(
         _sessionState.update { it.copy(mode = newMode) }
         Log.d(TAG, "Mode → $newMode")
         if (newMode == NavMode.CAMERA) recomputeAndEmit()
+    }
+
+    fun setModeSelection(selection: NavigationModeSelection) {
+        if (_sessionState.value.modeSelection == selection) return
+        _sessionState.update { it.copy(modeSelection = selection) }
+        Log.d(TAG, "ModeSelection → $selection")
+        when (selection) {
+            NavigationModeSelection.AUTO -> {
+                // Do not force mode; next orientation update will control it.
+            }
+            NavigationModeSelection.AR -> {
+                switchMode(NavMode.CAMERA)
+            }
+            NavigationModeSelection.MAP -> {
+                switchMode(NavMode.MAP)
+            }
+        }
     }
 
     fun updatePath(newPath: List<GraphNode>) {

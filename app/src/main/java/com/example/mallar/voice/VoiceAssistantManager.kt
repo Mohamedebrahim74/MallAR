@@ -6,7 +6,7 @@ import com.example.mallar.data.AStarPath
 import com.example.mallar.data.MallGraph
 import com.example.mallar.navigation.NavSessionState
 import com.example.mallar.navigation.NavigationSessionManager
-import com.example.mallar.ui.screens.NavigationState
+import com.example.mallar.ui.localization.NavigationState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

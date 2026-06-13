@@ -52,7 +52,7 @@ data class LocalizationResult(
     /**
      * The [GraphNode] that best represents the user's estimated position —
      * the nearest walkable node to [estimatedMapX]/[estimatedMapY].
-     * This is what gets written to [com.example.mallar.ui.screens.NavigationState].
+     * This is what gets written to [com.example.mallar.ui.localization.NavigationState].
      */
     val bestStartNode: GraphNode?
 )
