@@ -11,8 +11,8 @@ object FloorMapAssets {
     const val FLOOR_3 = 3
 
     fun mapAssetForFloor(floor: Int): String = when (floor) {
-        FLOOR_3 -> "map3.png"
-        else -> "map2.png"
+        FLOOR_3 -> "floor3_map.jpg"
+        else -> "floor2_map.jpg"
     }
 
     fun floorForPlace(place: Place?): Int = place?.floor ?: FLOOR_2

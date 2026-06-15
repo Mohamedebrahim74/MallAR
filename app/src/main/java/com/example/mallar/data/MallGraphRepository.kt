@@ -69,9 +69,13 @@ object MallGraphRepository {
 
     fun load(context: Context): MallGraph {
         graph?.let { return it }
-        val json   = context.assets.open("mall_graph.json").bufferedReader().use { it.readText() }
-        val loaded = Gson().fromJson(json, MallGraph::class.java)
-        graph      = loaded
+
+        val json = context.assets.open("mall_navigation_map_v1.0.json")
+            .bufferedReader().use { it.readText() }
+        val navMap = Gson().fromJson(json, NavigationMap::class.java)
+        val loaded = convertToMallGraph(navMap)
+
+        graph       = loaded
         loadedGraph = loaded
         // Build lookup caches immediately — O(n) once, then O(1) forever
         nodeMapCache   = loaded.nodes.associateBy { it.id }
@@ -79,6 +83,89 @@ object MallGraphRepository {
         // Validate on load
         validateGraph(loaded)
         return loaded
+    }
+
+    // ── Conversion from NavigationMap → MallGraph ────────────────────────────
+
+    private fun convertToMallGraph(navMap: NavigationMap): MallGraph {
+        // 1. Build store lookup: storeId string → StoreInfo
+        val storeLookup = navMap.stores.associateBy { it.id }
+
+        // 2. Assign sequential integer IDs to every node, track string→int mapping
+        val stringToIntId = mutableMapOf<String, Int>()
+        val nodeFloorMap  = mutableMapOf<String, Int>()  // nodeStringId → floor
+        val graphNodes    = mutableListOf<GraphNode>()
+        var nextId = 1
+
+        for (floor in navMap.floors) {
+            for (mapNode in floor.nodes) {
+                val intId = nextId++
+                stringToIntId[mapNode.id] = intId
+                nodeFloorMap[mapNode.id]  = floor.id
+
+                // Look up store metadata if this node belongs to a store
+                val store = mapNode.storeId?.let { storeLookup[it] }
+                val shopIdInt = mapNode.storeId?.removePrefix("store_")?.toIntOrNull()
+
+                graphNodes.add(
+                    GraphNode(
+                        id        = intId,
+                        x         = mapNode.x,
+                        y         = mapNode.y,
+                        floor     = floor.id,
+                        shopId    = shopIdInt,
+                        shopName  = store?.name,
+                        logo      = store?.logo,
+                        category  = store?.category,
+                        // Floor transitions are handled via stair_connections below
+                        transitionType      = null,
+                        connectedFloor      = null,
+                        transitionNodeId    = null,
+                        escalatorElevatorId = null
+                    )
+                )
+            }
+        }
+
+        // 3. Convert per-floor edges (string pairs → GraphEdge)
+        val graphEdges = mutableListOf<GraphEdge>()
+        for (floor in navMap.floors) {
+            for (pair in floor.edges) {
+                if (pair.size < 2) continue
+                val fromInt = stringToIntId[pair[0]] ?: continue
+                val toInt   = stringToIntId[pair[1]] ?: continue
+                graphEdges.add(GraphEdge(from = fromInt, to = toInt))
+            }
+        }
+
+        // 4. Convert stair_connections into cross-floor edges
+        //    Also mark the departure/arrival nodes with transition metadata
+        val nodeMap = graphNodes.associateBy { it.id }.toMutableMap()
+        for (stair in navMap.stairConnections) {
+            val fromInt = stringToIntId[stair.fromNode] ?: continue
+            val toInt   = stringToIntId[stair.toNode]   ?: continue
+            graphEdges.add(GraphEdge(from = fromInt, to = toInt))
+
+            // Annotate transition nodes so FloorTransitionHelper can detect them
+            val fromFloor = nodeFloorMap[stair.fromNode] ?: 2
+            val toFloor   = nodeFloorMap[stair.toNode]   ?: 3
+            nodeMap[fromInt]?.let { old ->
+                nodeMap[fromInt] = old.copy(
+                    transitionType   = stair.type,
+                    connectedFloor   = toFloor,
+                    transitionNodeId = toInt
+                )
+            }
+            nodeMap[toInt]?.let { old ->
+                nodeMap[toInt] = old.copy(
+                    transitionType   = stair.type,
+                    connectedFloor   = fromFloor,
+                    transitionNodeId = fromInt
+                )
+            }
+        }
+
+        return MallGraph(nodes = nodeMap.values.toList(), edges = graphEdges)
     }
 
     // ── FIX: All lookup functions use the HashMap cache — no linear scan ──────
