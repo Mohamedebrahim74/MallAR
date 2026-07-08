@@ -6,8 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -49,7 +47,7 @@ import com.example.mallar.ui.theme.*
 //
 // UX flow:
 //   HIGH   → Auto-accept banner (2 s) → onConfirmed()
-//   MEDIUM → Show this screen → user picks their store → onConfirmed()
+//   MEDIUM → Show this screen → user confirms the best-match store → onConfirmed()
 //   LOW    → Show this screen with warning → user can re-scan → onRescan()
 //
 // ─────────────────────────────────────────────────────────────────────────────
@@ -73,6 +71,9 @@ fun LocalizationConfirmScreen(
         )
         return
     }
+
+    // detections are assumed sorted by confidence descending
+    val bestDetection = result.detections.firstOrNull()
 
     // Full confirmation dialog for MEDIUM / LOW
     Box(
@@ -154,11 +155,10 @@ fun LocalizationConfirmScreen(
 
                 // ── Question label ───────────────────────────────────────────
                 Text(
-                    text       = when {
-                        result.detections.isEmpty() -> "No stores detected — please try again"
-                        result.detections.size == 1 -> "We detected this store nearby:"
-                        else -> "We detected these stores nearby — tap where you are:"
-                    },
+                    text       = if (bestDetection == null)
+                        "No store detected — please try again"
+                    else
+                        "We detected this store. Is this where you are?",
                     fontSize   = 14.sp,
                     color      = TextSecondary,
                     modifier   = Modifier
@@ -169,25 +169,17 @@ fun LocalizationConfirmScreen(
 
                 Spacer(Modifier.height(10.dp))
 
-                // ── Landmark cards ───────────────────────────────────────────
-                if (result.detections.isEmpty()) {
+                // ── Best-match landmark card ─────────────────────────────────
+                if (bestDetection == null) {
                     EmptyDetectionState()
                 } else {
-                    LazyColumn(
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(max = 340.dp)
-                    ) {
-                        itemsIndexed(result.detections) { index, detection ->
-                            LandmarkCard(
-                                detection = detection,
-                                rank      = index + 1,
-                                isTop     = index == 0,
-                                onClick   = { onConfirmed(detection) }
-                            )
-                        }
+                    Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+                        LandmarkCard(
+                            detection = bestDetection,
+                            rank      = 1,
+                            isTop     = true,
+                            onClick   = { onConfirmed(bestDetection) }
+                        )
                     }
                 }
 
